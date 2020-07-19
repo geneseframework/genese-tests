@@ -1,6 +1,6 @@
 {
-  "name": "genese-tests",
-  "version": "0.0.1",
+  "name": "genese-test",
+  "version": "0.0.2",
   "description": "Angular Unit Test Generator For Components, Directive, Services, and Pipes",
   "main": "index.js",
   "engines": {
@@ -8,6 +8,7 @@
     "npm": ">=6.1"
   },
   "scripts": {
+    "replace": "npm unpublish genese-test --force && npm publish && npm i -g genese-test",
     "test": "node test.js"
   },
   "author": {
