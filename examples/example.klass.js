@@ -13,7 +13,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-exports.ExampleKlass = void 0;
 var html_custom_element_1 = require("html-custom-element");
 var template = require("./my.html");
 var loading_1 = require("./loading");
@@ -29,7 +28,7 @@ var ExampleKlass = /** @class */ (function (_super) {
             return this["for"] === 'care' ?
                 this.userInfo.userId.replace('.', ' ') : this.userInfo.firstName + " " + this.userInfo.lastName;
         },
-        enumerable: false,
+        enumerable: true,
         configurable: true
     });
     ExampleKlass.prototype.connectedCallback = function () {

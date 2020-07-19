@@ -45,7 +45,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.Example5Component = void 0;
 var core_1 = require("@angular/core");
 var oneview_components_1 = require("@rogers/oneview-components");
 var oneview_components_2 = require("@rogers/oneview-components");
@@ -88,7 +87,7 @@ var Example5Component = /** @class */ (function () {
                 this.service8.bazInfo.authorizationLevel &&
                 this.service8.bazInfo.authorozationLevel.toUpperCase() === 'ACCOUNT_HOLDER';
         },
-        enumerable: false,
+        enumerable: true,
         configurable: true
     });
     Example5Component.prototype.ngOnInit = function () {

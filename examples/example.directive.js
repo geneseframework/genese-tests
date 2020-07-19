@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 exports.__esModule = true;
-exports.MyDirective = void 0;
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var MyDirective = /** @class */ (function () {

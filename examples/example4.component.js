@@ -9,7 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 exports.__esModule = true;
-exports.Example4Component = void 0;
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var router_1 = require("@angular/router");
@@ -66,7 +65,7 @@ var Example4Component = /** @class */ (function () {
             this.pagedIiiiiiiii = this.filteredIiiiiiiii.slice(staIndex, endIndex);
             this.pppTtttt = Math.ceil(this.filteredIiiiiiiii.length / this.numIiiPppIiiii) || 1;
         },
-        enumerable: false,
+        enumerable: true,
         configurable: true
     });
     Example4Component.prototype.applyFilter = function (event) {

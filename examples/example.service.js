@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 exports.__esModule = true;
-exports.DynamicComponentService = void 0;
 var core_1 = require("@angular/core");
 var oneview_components_1 = require("@rogers/oneview-components");
 var http_1 = require("@angular/common/http");

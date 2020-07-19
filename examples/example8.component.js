@@ -45,7 +45,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.Example8Component = void 0;
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var one_service_1 = require("./one.service");

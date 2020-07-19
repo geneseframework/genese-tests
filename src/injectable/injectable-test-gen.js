@@ -16,7 +16,9 @@ class InjectableTestGen {
         this.typescript = fs.readFileSync(path.resolve(tsPath), 'utf8');
         this.template = config.templates.injectable;
 
+        console.log('INJECTABLEEE PATHHH', tsPath)
         this.klass = CommonTestGen.getKlass.bind(this)();
+        console.log('INJECTABLEEE this.klass', this.klass)
         this.imports = CommonTestGen.getImports.bind(this)();
         this.angularType = CommonTestGen.getAngularType.bind(this)().toLowerCase();
         this.klassProperties = CommonTestGen.getKlassProperties.bind(this)();
@@ -42,7 +44,6 @@ class InjectableTestGen {
             accessorTests: undefined, //  declarition only, will be set from mockData
             functionTests: undefined //  declarition only, will be set from mockData
         }
-        console.log('EJS DATAAAAA', ejsData)
 
         return {ejsData};
     }

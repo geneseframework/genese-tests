@@ -11,15 +11,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spread = (this && this.__spread) || function () {
+    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+    return ar;
 };
 exports.__esModule = true;
-exports.Example2Component = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var Example2Component = /** @class */ (function () {
@@ -38,7 +50,7 @@ var Example2Component = /** @class */ (function () {
             this.isFlow2 = show;
             this.getControlsAndCreateForm();
         },
-        enumerable: false,
+        enumerable: true,
         configurable: true
     });
     Object.defineProperty(Example2Component.prototype, "myData", {
@@ -51,7 +63,7 @@ var Example2Component = /** @class */ (function () {
             var sites = this.data.location.sites;
             return { amount: amount, siteToolTip: siteToolTip, sites: sites };
         },
-        enumerable: false,
+        enumerable: true,
         configurable: true
     });
     Example2Component.prototype.ngOnInit = function () {
@@ -70,7 +82,7 @@ var Example2Component = /** @class */ (function () {
         var defaultControlKeys = ['foo', 'bar', 'baz'];
         switch (this.selectedType.code) {
             case 'foo':
-                this.formControlsKeys = __spreadArrays(defaultControlKeys, ['foo', 'bar']);
+                this.formControlsKeys = __spread(defaultControlKeys, ['foo', 'bar']);
                 break;
             default:
                 this.formControlsKeys = defaultControlKeys;

@@ -19,8 +19,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 exports.__esModule = true;
-exports.Example6Component = void 0;
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -92,7 +107,7 @@ var Example6Component = /** @class */ (function () {
             }
         }), operators_1.shareReplay(1));
         this.baz$ = rxjs_1.combineLatest(this.foo$, this.fuz$).pipe(operators_1.map(function (_a) {
-            var foo = _a[0], fuz = _a[1];
+            var _b = __read(_a, 2), foo = _b[0], fuz = _b[1];
             if (foo.dateCccBbb && fuz.length === 0) {
                 _this.statusOooo = 'INFO';
             }
@@ -102,7 +117,7 @@ var Example6Component = /** @class */ (function () {
             return _this.statusOooo;
         }));
         this.showBarXxx$ = rxjs_1.combineLatest(this.bar$, this.fuz$, this.foo$).pipe(operators_1.map(function (_a) {
-            var param1 = _a[0], fuz = _a[1], foo = _a[2];
+            var _b = __read(_a, 3), param1 = _b[0], fuz = _b[1], foo = _b[2];
             if (param1.numTttAaa !== 1 ||
                 (param1.fooStatus.toLowerCase() !== 'open' && bar.fooStatus.toLowerCase() !== 'active')) {
                 return false;
@@ -130,7 +145,7 @@ var Example6Component = /** @class */ (function () {
             var url = "/my.html?" + ("nnnAaaa=" + this.nnnAaaa + "&link=" + param.link);
             this.srcIiii = this.sanitize.bypassSecurityTrustResourceUrl(url); // needed for NG context
         },
-        enumerable: false,
+        enumerable: true,
         configurable: true
     });
     Example6Component.prototype.ngOnInit = function () {

@@ -7,24 +7,24 @@ const injectableTemplate = fs.readFileSync(path.join(__dirname, 'src', 'injectab
 const pipeTemplate = fs.readFileSync(path.join(__dirname, 'src', 'pipe', 'pipe.template.ts.ejs'), 'utf8');
 
 module.exports = {
-  // framework: 'karma', // or 'jest'
+  framework: 'jasmine', // or 'jest'
   // .spec file EJS templtes
   templates: {
     klass: klassTemplate,
     component: componentTemplate,
     directive: directiveTemplate,
-    injectable: injectableTemplate, 
-    pipe: pipeTemplate 
+    injectable: injectableTemplate,
+    pipe: pipeTemplate
   },
   // necessary directives used for a component test
   directives: [
     'oneviewPermitted'
-  ], 
+  ],
   // necessary pipes used for a component test
   pipes: [
     'translate', 'phoneNumber', 'safeHtml'
   ],
-  // when convert to JS, some codes need to be replaced to work 
+  // when convert to JS, some codes need to be replaced to work
   replacements: [
     { from: 'require\\("html-custom-element"\\)', to: '{}'}, // some 3rd party require statements causes error, using import or windows directly
     { from: '^\\S+\\.define\\(.*\\);', to: ''} // some commands causes error

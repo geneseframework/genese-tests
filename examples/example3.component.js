@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 exports.__esModule = true;
-exports.Example3Component = void 0;
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var date_fns_1 = require("date-fns");
@@ -65,7 +64,7 @@ var Example3Component = /** @class */ (function () {
                 this.myAmount = data.myAmount;
             }
         },
-        enumerable: false,
+        enumerable: true,
         configurable: true
     });
     Example3Component.prototype.ngOnInit = function () {

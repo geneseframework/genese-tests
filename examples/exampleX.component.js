@@ -6,7 +6,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 exports.__esModule = true;
-exports.ExampleXComponent = void 0;
 var core_1 = require("@angular/core");
 var ExampleXComponent = /** @class */ (function () {
     function ExampleXComponent() {
