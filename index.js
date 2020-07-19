@@ -18,26 +18,26 @@ const PipeTestGen = require('./src/pipe/pipe-test-gen.js');
 const ClassTestGen = require('./src/class/class-test-gen.js');
 
 const argv = yargs.usage('Usage: $0 <tsFile> [options]')
-  .options({
-    's': { alias: 'spec', describe: 'write the spec file along with source file', type: 'boolean' },
-    'f': {
-      alias: 'force',
-      describe: 'It prints out a new test file, and it does not ask a question when overwrite spec file',
-      type: 'boolean'
-    },
-    'F': {
-      alias: 'forcePrint',
-      describe: 'It prints out to console, and it does not ask a question',
-      type: 'boolean'
-    },
-    'm': { alias: 'method', describe: 'Show code only for this method', type: 'string' },
-    'v': { alias: 'verbose', describe: 'log verbose debug messages', type: 'boolean' },
-    'framework': { describe: 'test framework, jest or karma', type: 'string' },
-    'c': { alias: 'config', describe: 'The configuration file to load options from', type: 'string', default: 'ngentest.config.js' }
-  })
-  .example('$0 my.component.ts', 'generate Angular unit test for my.component.ts')
-  .help('h')
-  .argv;
+    .options({
+      's': { alias: 'spec', describe: 'write the spec file along with source file', type: 'boolean' },
+      'f': {
+        alias: 'force',
+        describe: 'It prints out a new test file, and it does not ask a question when overwrite spec file',
+        type: 'boolean'
+      },
+      'F': {
+        alias: 'forcePrint',
+        describe: 'It prints out to console, and it does not ask a question',
+        type: 'boolean'
+      },
+      'm': { alias: 'method', describe: 'Show code only for this method', type: 'string' },
+      'v': { alias: 'verbose', describe: 'log verbose debug messages', type: 'boolean' },
+      'framework': { describe: 'test framework, jest or karma', type: 'string' },
+      'c': { alias: 'config', describe: 'The configuration file to load options from', type: 'string', default: 'ngentest.config.js' }
+    })
+    .example('$0 my.component.ts', 'generate Angular unit test for my.component.ts')
+    .help('h')
+    .argv;
 
 Util.DEBUG = argv.verbose;
 const tsFile = argv._[0].replace(/\.spec\.ts$/, '.ts');
@@ -84,17 +84,17 @@ function getTestGenerator (tsPath, config) {
   const typescript = fs.readFileSync(path.resolve(tsPath), 'utf8');
   const angularType = Util.getAngularType(typescript).toLowerCase();
   const testGenerator = /* eslint-disable */
-    angularType === 'component' ? new ComponentTestGen(tsPath, config) :
-    angularType === 'directive' ? new DirectiveTestGen(tsPath, config) :
-    angularType === 'service' ? new InjectableTestGen(tsPath, config) :
-    angularType === 'pipe' ? new PipeTestGen(tsPath, config) :
-    new ClassTestGen(tsPath, config); /* eslint-enable */
+      angularType === 'component' ? new ComponentTestGen(tsPath, config) :
+          angularType === 'directive' ? new DirectiveTestGen(tsPath, config) :
+              angularType === 'service' ? new InjectableTestGen(tsPath, config) :
+                  angularType === 'pipe' ? new PipeTestGen(tsPath, config) :
+                      new ClassTestGen(tsPath, config); /* eslint-enable */
   return testGenerator;
 }
 
 function getFuncTest(Klass, funcName, funcType, angularType) {
   Util.DEBUG &&
-    console.log('\x1b[36m%s\x1b[0m', `\nPROCESSING #${funcName}`);
+  console.log('\x1b[36m%s\x1b[0m', `\nPROCESSING #${funcName}`);
 
   const funcMockData = getFuncMockData(Klass, funcName, funcType);
   const [allFuncMockJS, asserts] = Util.getFuncMockJS(funcMockData, angularType);
@@ -103,13 +103,13 @@ function getFuncTest(Klass, funcName, funcType, angularType) {
 
   const funcAssertJS = asserts.map(el => `// expect(${el.join('.')}).toHaveBeenCalled()`);
   const jsToRun =
-    funcType === 'set' ? `${angularType}.${funcName} = ${funcParamJS || '{}'}`:
-    funcType === 'get' ? `const ${funcName} = ${angularType}.${funcName}` :
-    `${angularType}.${funcName}(${funcParamJS})`;
+      funcType === 'set' ? `${angularType}.${funcName} = ${funcParamJS || '{}'}`:
+          funcType === 'get' ? `const ${funcName} = ${angularType}.${funcName}` :
+              `${angularType}.${funcName}(${funcParamJS})`;
   const itBlockName =
-    funcType === 'method' ? `should run #${funcName}()` :
-    funcType === 'get' ? `should run GetterDeclaration #${funcName}` :
-    funcType === 'set' ? `should run SetterDeclaration #${funcName}` : '';
+      funcType === 'method' ? `should run #${funcName}()` :
+          funcType === 'get' ? `should run GetterDeclaration #${funcName}` :
+              funcType === 'set' ? `should run SetterDeclaration #${funcName}` : '';
   const asyncStr = funcMockData.isAsync ? 'await ' : '';
 
   return `
@@ -146,10 +146,10 @@ function run (tsFile) {
 
     // replace invalid require statements
     let replacedOutputText = result.outputText
-      .replace(/require\("\.(.*)"\)/gm, '{}') // replace require statement to a variable, {}
-      .replace(/super\(.*\);/gm, '') // remove inheritance code
-      .replace(/super\./gm, 'this.') // change inheritance call to this call
-      .replace(/\s+extends\s\S+ {/gm, ' extends Object {') // rchange inheritance to an Object
+        .replace(/require\("\.(.*)"\)/gm, '{}') // replace require statement to a variable, {}
+        .replace(/super\(.*\);/gm, '') // remove inheritance code
+        .replace(/super\./gm, 'this.') // change inheritance call to this call
+        .replace(/\s+extends\s\S+ {/gm, ' extends Object {') // rchange inheritance to an Object
 
     config.replacements.forEach( ({from,to}) => {
       replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
@@ -158,7 +158,7 @@ function run (tsFile) {
     const modjule = requireFromString(replacedOutputText);
     const Klass = modjule[ejsData.className];
     Util.DEBUG &&
-      console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
+    console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
     const ctorMockData = getFuncMockData(Klass, 'constructor', 'constructor');
     console.log('CTORMOCKDATAAAA', ctorMockData);
     let constructorParams = '';
@@ -179,24 +179,24 @@ function run (tsFile) {
     testGenerator.klassSetters.forEach(setter => {
       const setterName = setter.node.name.escapedText;
       ejsData.accessorTests[`${setterName} SetterDeclaration`] =
-        Util.indent(getFuncTest(Klass, setterName, 'set', angularType), '  ');
+          Util.indent(getFuncTest(Klass, setterName, 'set', angularType), '  ');
     });
     testGenerator.klassGetters.forEach(getter => {
       const getterName = getter.node.name.escapedText;
       ejsData.accessorTests[`${getterName} GetterDeclaration`] =
-        Util.indent(getFuncTest(Klass, getterName, 'get', angularType), '  ');
+          Util.indent(getFuncTest(Klass, getterName, 'get', angularType), '  ');
     });
 
     testGenerator.klassMethods.forEach(method => {
       const methodName = method.node.name.escapedText;
       try {
         ejsData.functionTests[methodName] =
-          Util.indent(getFuncTest(Klass, methodName, 'method', angularType), '  ');
+            Util.indent(getFuncTest(Klass, methodName, 'method', angularType), '  ');
       } catch (e) {
         const msg = '    // '+ e.stack;
         const itBlock = `it('should run #${method.name}()', async () => {\n` +
-          `${msg.replace(/\n/g, '\n    // ')}\n` +
-          `  });\n`
+            `${msg.replace(/\n/g, '\n    // ')}\n` +
+            `  });\n`
         ejsData.functionTests[methodName] = itBlock;
         errors.push(e);
       }
