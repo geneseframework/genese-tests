@@ -3,9 +3,9 @@ const fs = require('fs');
 const path = require('path'); // eslint-disable-line
 const yargs = require('yargs');
 const ts = require('typescript');
+const chalk = require('chalk');
 const requireFromString = require('require-from-string');
 const glob = require('glob');
-const appRoot = require('app-root-path');
 
 const config = require('./ngentest.config');
 const Util = require('./src/util.js');
@@ -21,12 +21,12 @@ const argv = yargs.usage('Usage: $0 <tsFile> [options]')
   .options({
     's': { alias: 'spec', describe: 'write the spec file along with source file', type: 'boolean' },
     'f': {
-      alias: 'force', 
+      alias: 'force',
       describe: 'It prints out a new test file, and it does not ask a question when overwrite spec file',
       type: 'boolean'
     },
     'F': {
-      alias: 'forcePrint', 
+      alias: 'forcePrint',
       describe: 'It prints out to console, and it does not ask a question',
       type: 'boolean'
     },
@@ -41,12 +41,11 @@ const argv = yargs.usage('Usage: $0 <tsFile> [options]')
 
 Util.DEBUG = argv.verbose;
 const tsFile = argv._[0].replace(/\.spec\.ts$/, '.ts');
-// const writeToSpec = argv.spec;
 if (!(tsFile && fs.existsSync(tsFile))) {
   console.error('Error. invalid typescript file. e.g., Usage $0 <tsFile> [options]');
   process.exit(1);
 }
-
+console.log(chalk.blueBright('START PROCESS'));
 if (argv.c && fs.existsSync(path.resolve(argv.c))) {
   loadConfig(path.resolve(argv.c));
 } else {
@@ -103,12 +102,12 @@ function getFuncTest(Klass, funcName, funcType, angularType) {
   const funcParamJS = Util.getFuncParamJS(funcMockData.params);
 
   const funcAssertJS = asserts.map(el => `// expect(${el.join('.')}).toHaveBeenCalled()`);
-  const jsToRun = 
-    funcType === 'set' ? `${angularType}.${funcName} = ${funcParamJS || '{}'}`: 
-    funcType === 'get' ? `const ${funcName} = ${angularType}.${funcName}` : 
+  const jsToRun =
+    funcType === 'set' ? `${angularType}.${funcName} = ${funcParamJS || '{}'}`:
+    funcType === 'get' ? `const ${funcName} = ${angularType}.${funcName}` :
     `${angularType}.${funcName}(${funcParamJS})`;
-  const itBlockName = 
-    funcType === 'method' ? `should run #${funcName}()` : 
+  const itBlockName =
+    funcType === 'method' ? `should run #${funcName}()` :
     funcType === 'get' ? `should run GetterDeclaration #${funcName}` :
     funcType === 'set' ? `should run SetterDeclaration #${funcName}` : '';
   const asyncStr = funcMockData.isAsync ? 'await ' : '';
@@ -161,8 +160,15 @@ function run (tsFile) {
     Util.DEBUG &&
       console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
     const ctorMockData = getFuncMockData(Klass, 'constructor', 'constructor');
-
-    const ctorParamJs = Util.getFuncParamJS(ctorMockData.params);
+    console.log('CTORMOCKDATAAAA', ctorMockData);
+    let constructorParams = '';
+    for (let i = 0; i < Object.keys(ctorMockData.params).length; i++) {
+      constructorParams = `${constructorParams} undefined,`;
+    }
+    constructorParams = constructorParams.slice(1, -1);
+    console.log('CONSTR PARAMSSS', constructorParams)
+    const ctorParamJs = constructorParams;
+    // const ctorParamJs = Util.getFuncParamJS(ctorMockData.params);
     ejsData.ctorParamJs = Util.indent(ctorParamJs, ' '.repeat(6)).trim();
     ejsData.providerMocks = testGenerator.getProviderMocks(ctorMockData.params);
     // for (var key in ejsData.providerMocks) {

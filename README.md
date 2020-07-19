@@ -1,12 +1,12 @@
-# ngentest
-Angular5,6,7,8+ Unit Test Generator For Components, Directive, Services, and Pipes
+# genese-tests
+Angular Unit Test Generator For Components, Directive, Services, and Pipes
 
 ## Install & Run
 ```bash
-$ npm install ngentest -g # to run this command anywhere
-$ ngentest my.component.ts 
-$ ngentest my.directive.ts -s # write unit test to my.directive.spec.ts
-$ ngentest my.directive.ts -c ../ngentest.config.js # use the given config file.
+$ npm i genese-tests -g # to run this command anywhere
+$ gt my.component.ts 
+$ gt my.directive.ts -s # write unit test to my.directive.spec.ts
+$ gt my.directive.ts -c ../ngentest.config.js # use the given config file.
 ```
 
 To see the source file and generated examples, please take a look at examples directory.

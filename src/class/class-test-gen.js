@@ -21,10 +21,10 @@ class ClassTestGen {
     this.angularType = CommonTestGen.getAngularType.bind(this)();
     this.klassProperties = CommonTestGen.getKlassProperties.bind(this)();
     this.klassGetters = CommonTestGen.getKlassGetters.bind(this)(),
-    this.klassSetters = CommonTestGen.getKlassSetters.bind(this)(),
-    this.klassMethods = CommonTestGen.getKlassMethods.bind(this)(),
+        this.klassSetters = CommonTestGen.getKlassSetters.bind(this)(),
+        this.klassMethods = CommonTestGen.getKlassMethods.bind(this)(),
 
-    this.getProviderMocks = CommonTestGen.getProviderMocks.bind(this);
+        this.getProviderMocks = CommonTestGen.getProviderMocks.bind(this);
     this.getGenerated = CommonTestGen.getGenerated.bind(this);
     this.writeGenerated = CommonTestGen.writeGenerated.bind(this);
   }
@@ -42,7 +42,6 @@ class ClassTestGen {
       accessorTests: undefined, //  declarition only, will be set from mockData
       functionTests: undefined, //  declarition only, will be set from mockData
     }
-
     return {ejsData};
   }
 
