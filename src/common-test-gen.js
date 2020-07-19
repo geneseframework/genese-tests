@@ -114,7 +114,8 @@ function getAngularType() {
 // import statement mocks;
 function getImportMocks() {
     const importMocks = [];
-    const klassName = this.klass.node.name.escapedText;
+    const klassName = this.klass.node.getName();
+    // const klassName = this.klass.node.name.escapedText;
     const moduleName = path.basename(this.tsPath).replace(/.ts$/, '');
 
     const imports = {};
@@ -217,12 +218,12 @@ function getProviderMocks(ctorMockData) {
 
 function getInputMocks() {
     const inputMocks = {html: [], js: []};
-    this.klassProperties.forEach(({type, name, decorator}) => {
-        if (decorator && decorator.name === 'Input') {
-            inputMocks.html.push(`[${decorator.param || name}]="${name}"`);
-            inputMocks.js.push(`${name}: ${type};`);
-        }
-    });
+    // this.klassProperties.forEach(({type, name, decorator}) => {
+    //     if (decorator && decorator.name === 'Input') {
+    //         inputMocks.html.push(`[${decorator.param || name}]="${name}"`);
+    //         inputMocks.js.push(`${name}: ${type};`);
+    //     }
+    // });
 
     return inputMocks;
 }
@@ -230,13 +231,13 @@ function getInputMocks() {
 function getOutputMocks() {
     const outputMocks = {html: [], js: []};
 
-    this.klassProperties.forEach(({type, name, decorator}) => {
-        const funcName = `on${name.replace(/^[a-z]/, x => x.toUpperCase())}`;
-        if (decorator && decorator.name === 'Output') {
-            outputMocks.html.push(`(${decorator.param || name})="${funcName}($event)"`);
-            outputMocks.js.push(`${funcName}(event): void { /* */ }`);
-        }
-    });
+    // this.klassProperties.forEach(({type, name, decorator}) => {
+    //     const funcName = `on${name.replace(/^[a-z]/, x => x.toUpperCase())}`;
+    //     if (decorator && decorator.name === 'Output') {
+    //         outputMocks.html.push(`(${decorator.param || name})="${funcName}($event)"`);
+    //         outputMocks.js.push(`${funcName}(event): void { /* */ }`);
+    //     }
+    // });
 
     return outputMocks;
 }

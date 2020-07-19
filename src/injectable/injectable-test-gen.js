@@ -19,9 +19,9 @@ class InjectableTestGen {
         console.log('INJECTABLEEE PATHHH', tsPath)
         this.klass = CommonTestGen.getKlass.bind(this)();
         console.log('INJECTABLEEE this.klass', this.klass)
-        this.imports = CommonTestGen.getImports.bind(this)();
-        this.angularType = CommonTestGen.getAngularType.bind(this)().toLowerCase();
-        this.klassProperties = CommonTestGen.getKlassProperties.bind(this)();
+        // this.imports = CommonTestGen.getImports.bind(this)();
+        // this.angularType = CommonTestGen.getAngularType.bind(this)().toLowerCase();
+        // this.klassProperties = CommonTestGen.getKlassProperties.bind(this)();
         this.klassGetters = CommonTestGen.getKlassGetters.bind(this)(),
         this.klassSetters = CommonTestGen.getKlassSetters.bind(this)(),
         this.klassMethods = CommonTestGen.getKlassMethods.bind(this)(),
@@ -32,7 +32,8 @@ class InjectableTestGen {
 
     getData () {
         const ejsData = {
-            className: this.klass.node.name.escapedText,
+            className: this.klass.node.getName(),
+            // className: this.klass.node.name.escapedText,
             importMocks: CommonTestGen.getImportMocks.bind(this)(),
             inputMocks: CommonTestGen.getInputMocks.bind(this)(),
             outputMocks: CommonTestGen.getOutputMocks.bind(this)(),
