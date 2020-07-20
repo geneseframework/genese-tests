@@ -8,16 +8,12 @@ const ts_morph_1 = require("ts-morph");
 exports.project = new ts_morph_1.Project();
 class TypescriptParser {
     constructor(code) {
-        // console.log('CODE PARSERRRR', code)
         const sourceFile = exports.project.createSourceFile('temp.ts', code, { overwrite: true });
-        // console.log('SOURCE FILLLL', sourceFile.getFilePath())
         this.rootNode = this.getRecursiveFrom(sourceFile, sourceFile);
         // console.log('ROOTNODE', this.rootNode.children)
     }
     getRecursiveFrom(node, sourceFile) {
         const syntaxKind = node.getKindName();
-        // console.log('GET CHILDRRRR', syntaxKind, node.getChildCount())
-        // const syntaxKind = SyntaxKind[node.kind];
         const nodeText = node.getText(sourceFile);
         const children = [];
         node.forEachChild(child => {
@@ -30,7 +26,13 @@ class TypescriptParser {
                 all.length === 1 ? all[0] :
                     all;
         };
-        return { node, syntaxKind, nodeText, children, get };
+        return {
+            node: node,
+            syntaxKind: syntaxKind,
+            nodeText: nodeText,
+            children: children,
+            get: get
+        };
     }
 }
 exports.TypescriptParser = TypescriptParser;

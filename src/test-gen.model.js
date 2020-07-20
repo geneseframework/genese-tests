@@ -25,9 +25,11 @@ class TestGen {
         return (this.__get(this.klass).decorator || {}).name;
     }
     __get(node) {
+        var _a;
         node = node.node || node;
         const name = node.name && node.name.escapedText;
         let type;
+        console.log('TYPPPPPP', node.type, (_a = node.node) === null || _a === void 0 ? void 0 : _a.getKindName());
         if (node.type && node.type.typeName) {
             type = node.type.typeName.escapedText;
         }
@@ -61,7 +63,7 @@ class TestGen {
         const imports = [];
         const parsed = new typescript_parser_1.TypescriptParser(this.typescript);
         util_1.Util.__toArray(parsed.rootNode.get('ImportDeclaration'))
-            .map(prop => {
+            .forEach(prop => {
             var _a, _b;
             const moduleName = (_b = (_a = prop.node.moduleSpecifier) === null || _a === void 0 ? void 0 : _a.text) !== null && _b !== void 0 ? _b : 'Unknown';
             const namedImports = prop.get('ImportClause').get('NamedImports');
@@ -84,9 +86,7 @@ class TestGen {
         var _a;
         const importMocks = [];
         const klassName = this.klass.node.getName();
-        // const klassName = this.klass.node.name.escapedText;
         const moduleName = util_1.Util.getFilename(this.tsPath).replace(/.ts$/, '');
-        // const moduleName = path.basename(this.tsPath).replace(/.ts$/, '');
         const imports = {};
         if (['component', 'directive'].includes(this.angularType)) {
             imports[`@angular/core`] = ['Component'];
@@ -267,7 +267,7 @@ class TestGen {
     getGenerated(ejsData, options) {
         let generated;
         const funcName = options.method;
-        const specPath = util_1.Util.getFilename(this.tsPath).replace(/\.ts$/, '.spec.ts');
+        const specPath = this.tsPath.replace(/\.ts$/, '.spec.ts');
         // const specPath = path.resolve(this.tsPath.replace(/\.ts$/, '.spec.ts'));
         const existingTestCodes = fs.existsSync(specPath) && fs.readFileSync(specPath, 'utf8');
         if (funcName) {
@@ -305,7 +305,6 @@ class TestGen {
         return generated;
     }
     writeToSpecFile(specPath, generated) {
-        console.log('SPEC PATHHHHHHH WRITE', specPath);
         fs.writeFileSync(specPath, generated);
         console.log('Generated unit test to', specPath);
     }
@@ -324,8 +323,6 @@ class TestGen {
         const toFile = options.spec;
         const force = options.force;
         const specPath = this.tsPath.replace(/\.ts$/, '.spec.ts');
-        // const specPath = path.resolve(this.tsPath.replace(/\.ts$/, '.spec.ts'));
-        console.log('SPECPATHHHHH', specPath);
         generated = generated.replace(/\r\n/g, '\n');
         const specFileExists = fs.existsSync(specPath);
         if (toFile && specFileExists && force) {

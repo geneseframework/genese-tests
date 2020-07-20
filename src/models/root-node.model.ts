@@ -1,8 +1,8 @@
 import { Node } from 'ts-morph';
 
-export class RootNode {
+export class TsNode {
 
-    children?: RootNode[];
+    children?: TsNode[];
     get?: any;
     node?: Node;
     nodeText?: string;

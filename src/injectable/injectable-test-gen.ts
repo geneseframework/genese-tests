@@ -7,12 +7,8 @@ export class InjectableTestGen extends TestGen {
 
     constructor (tsPath, config) {
         super(tsPath, config);
-        // this.typescript = fs.readFileSync(path.resolve(tsPath), 'utf8');
         this.template = config.templates.injectable;
 
-        console.log('INJECTABLEEE PATHHH', tsPath)
-        // this.klass = CommonTestGen.getKlass.bind(this)();
-        // console.log('INJECTABLEEE this.klass', this.klass)
         // this.imports = CommonTestGen.getImports.bind(this)();
         // this.angularType = CommonTestGen.getAngularType.bind(this)().toLowerCase();
         // this.klassProperties = CommonTestGen.getKlassProperties.bind(this)();
@@ -25,11 +21,8 @@ export class InjectableTestGen extends TestGen {
     }
 
     getData () {
-        console.log('KINDDDD', this.klass?.node?.getKindName());
         const ejsData = {
-            // className: 'Unknown',
             className: this.klass.node?.getName() ?? 'Unknown',
-            // className: this.klass.node.name.escapedText,
             importMocks: this.getImportMocks(),
             inputMocks: this.getInputMocks(),
             outputMocks: this.getOutputMocks(),

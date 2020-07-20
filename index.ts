@@ -193,8 +193,6 @@ function run (tsFile) {
         testGenerator.klassMethods.forEach(method => {
             const methodNode = method.node as MethodDeclaration;
             const methodName = methodNode.getName();
-            console.log('METHOD NAMEEEE', methodName)
-            // const methodName = method.node.name.escapedText;
             try {
                 ejsData.functionTests[methodName] =
                     Util.indent(getFuncTest(Klass, methodName, 'method', angularType), '  ');

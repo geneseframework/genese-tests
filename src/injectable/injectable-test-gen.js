@@ -6,11 +6,7 @@ const CommonTestGen = require('../common-test-gen.js');
 class InjectableTestGen extends test_gen_model_1.TestGen {
     constructor(tsPath, config) {
         super(tsPath, config);
-        // this.typescript = fs.readFileSync(path.resolve(tsPath), 'utf8');
         this.template = config.templates.injectable;
-        console.log('INJECTABLEEE PATHHH', tsPath);
-        // this.klass = CommonTestGen.getKlass.bind(this)();
-        // console.log('INJECTABLEEE this.klass', this.klass)
         // this.imports = CommonTestGen.getImports.bind(this)();
         // this.angularType = CommonTestGen.getAngularType.bind(this)().toLowerCase();
         // this.klassProperties = CommonTestGen.getKlassProperties.bind(this)();
@@ -22,12 +18,9 @@ class InjectableTestGen extends test_gen_model_1.TestGen {
         // this.writeGenerated = CommonTestGen.writeGenerated.bind(this);
     }
     getData() {
-        var _a, _b, _c, _d;
-        console.log('KINDDDD', (_b = (_a = this.klass) === null || _a === void 0 ? void 0 : _a.node) === null || _b === void 0 ? void 0 : _b.getKindName());
+        var _a, _b;
         const ejsData = {
-            // className: 'Unknown',
-            className: (_d = (_c = this.klass.node) === null || _c === void 0 ? void 0 : _c.getName()) !== null && _d !== void 0 ? _d : 'Unknown',
-            // className: this.klass.node.name.escapedText,
+            className: (_b = (_a = this.klass.node) === null || _a === void 0 ? void 0 : _a.getName()) !== null && _b !== void 0 ? _b : 'Unknown',
             importMocks: this.getImportMocks(),
             inputMocks: this.getInputMocks(),
             outputMocks: this.getOutputMocks(),
