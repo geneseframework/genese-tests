@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const injectable_test_gen_1 = require("./src/injectable/injectable-test-gen");
 const util_1 = require("./src/util");
+const func_test_gen_1 = require("./src/func-test-gen");
 const fs = require('fs');
 const path = require('path'); // eslint-disable-line
 const yargs = require('yargs');
@@ -11,7 +12,6 @@ const chalk = require('chalk');
 const requireFromString = require('require-from-string');
 const glob = require('glob');
 const config = require('./ngentest.config');
-const FuncTestGen = require('./src/func-test-gen.js');
 const ComponentTestGen = require('./src/component/component-test-gen.js');
 const DirectiveTestGen = require('./src/directive/directive-test-gen.js');
 const PipeTestGen = require('./src/pipe/pipe-test-gen.js');
@@ -59,7 +59,7 @@ function loadConfig(filePath) {
     }
 }
 function getFuncMockData(Klass, funcName, funcType) {
-    const funcTestGen = new FuncTestGen(Klass, funcName, funcType);
+    const funcTestGen = new func_test_gen_1.FuncTestGen(Klass, funcName, funcType);
     const funcMockData = {
         isAsync: funcTestGen.isAsync,
         props: {},
@@ -141,17 +141,16 @@ function run(tsFile) {
         util_1.Util.DEBUG &&
             console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
         const ctorMockData = getFuncMockData(Klass, 'constructor', 'constructor');
-        console.log('CTORMOCKDATAAAA', ctorMockData);
         let constructorParams = '';
         for (let i = 0; i < Object.keys(ctorMockData.params).length; i++) {
             constructorParams = `${constructorParams} undefined,`;
         }
         constructorParams = constructorParams.slice(1, -1);
-        console.log('CONSTR PARAMSSS', constructorParams);
         const ctorParamJs = constructorParams;
         // const ctorParamJs = Util.getFuncParamJS(ctorMockData.params);
         ejsData.ctorParamJs = util_1.Util.indent(ctorParamJs, ' '.repeat(6)).trim();
-        ejsData.providerMocks = testGenerator.getProviderMocks(ctorMockData.params);
+        // TODO: uncomment
+        // ejsData.providerMocks = testGenerator.getProviderMocks(ctorMockData.params);
         // for (var key in ejsData.providerMocks) {
         //   ejsData.providerMocks[key] = Util.indent(ejsData.providerMocks[key]).replace(/\{\s+\}/gm, '{}');
         // }
@@ -166,26 +165,27 @@ function run(tsFile) {
             ejsData.accessorTests[`${getterName} GetterDeclaration`] =
                 util_1.Util.indent(getFuncTest(Klass, getterName, 'get', angularType), '  ');
         });
-        testGenerator.klassMethods.forEach(method => {
-            const methodName = method.node.name.escapedText;
-            try {
-                ejsData.functionTests[methodName] =
-                    util_1.Util.indent(getFuncTest(Klass, methodName, 'method', angularType), '  ');
-            }
-            catch (e) {
-                const msg = '    // ' + e.stack;
-                const itBlock = `it('should run #${method.name}()', async () => {\n` +
-                    `${msg.replace(/\n/g, '\n    // ')}\n` +
-                    `  });\n`;
-                ejsData.functionTests[methodName] = itBlock;
-                errors.push(e);
-            }
-        });
+        // TODO: uncomment
+        // testGenerator.klassMethods.forEach(method => {
+        //     const methodName = method.node.name.escapedText;
+        //     try {
+        //         ejsData.functionTests[methodName] =
+        //             Util.indent(getFuncTest(Klass, methodName, 'method', angularType), '  ');
+        //     } catch (e) {
+        //         const msg = '    // '+ e.stack;
+        //         const itBlock = `it('should run #${method.name}()', async () => {\n` +
+        //             `${msg.replace(/\n/g, '\n    // ')}\n` +
+        //             `  });\n`
+        //         ejsData.functionTests[methodName] = itBlock;
+        //         errors.push(e);
+        //     }
+        // });
         // console.log('..................................................................')
         // console.log(ejsData)
         // console.log('..................................................................')
-        const generated = testGenerator.getGenerated(ejsData, argv);
-        generated && testGenerator.writeGenerated(generated, argv);
+        // TODO: uncomment
+        // const generated = testGenerator.getGenerated(ejsData, argv);
+        // generated && testGenerator.writeGenerated(generated, argv);
         errors.forEach(e => console.error(e));
     }
     catch (e) {

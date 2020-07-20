@@ -149,7 +149,7 @@ export class Util {
      * set value from source ONLY IF target value does not exists
      *
      * For example, assuming source is {foo: {bar: 1}}, and target is {foo: {baz: 2}}
-     * AFter this function, target wil become { foo: {bar: 1, baz: 2}}
+     * After this function, target wil become { foo: {bar: 1, baz: 2}}
      */
     static merge (source, target) {
         const firstKey = Object.keys(source)[0];
