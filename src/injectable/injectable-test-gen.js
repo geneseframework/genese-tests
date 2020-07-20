@@ -23,18 +23,21 @@ class InjectableTestGen extends test_gen_model_1.TestGen {
     }
     getData() {
         var _a, _b, _c, _d;
-        // console.log('HEREEEEE')
         console.log('KINDDDD', (_b = (_a = this.klass) === null || _a === void 0 ? void 0 : _a.node) === null || _b === void 0 ? void 0 : _b.getKindName());
-        // console.log('HEREEEEE AGAIIINNNNN')
         const ejsData = {
             // className: 'Unknown',
             className: (_d = (_c = this.klass.node) === null || _c === void 0 ? void 0 : _c.getName()) !== null && _d !== void 0 ? _d : 'Unknown',
             // className: this.klass.node.name.escapedText,
+            importMocks: this.getImportMocks(),
+            inputMocks: this.getInputMocks(),
+            outputMocks: this.getOutputMocks(),
+            componentProviderMocks: this.getComponentProviderMocks(),
+            selector: this.getDirectiveSelector(),
             // importMocks: CommonTestGen.getImportMocks.bind(this)(),
-            inputMocks: CommonTestGen.getInputMocks.bind(this)(),
-            outputMocks: CommonTestGen.getOutputMocks.bind(this)(),
-            componentProviderMocks: CommonTestGen.getComponentProviderMocks.bind(this)(),
-            selector: CommonTestGen.getDirectiveSelector.bind(this)(),
+            // inputMocks: CommonTestGen.getInputMocks.bind(this)(),
+            // outputMocks: CommonTestGen.getOutputMocks.bind(this)(),
+            // componentProviderMocks: CommonTestGen.getComponentProviderMocks.bind(this)(),
+            // selector: CommonTestGen.getDirectiveSelector.bind(this)(),
             ctorParamJs: undefined,
             providerMocks: undefined,
             accessorTests: undefined,

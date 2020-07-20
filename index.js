@@ -184,8 +184,8 @@ function run(tsFile) {
         // console.log(ejsData)
         // console.log('..................................................................')
         // TODO: uncomment
-        // const generated = testGenerator.getGenerated(ejsData, argv);
-        // generated && testGenerator.writeGenerated(generated, argv);
+        const generated = testGenerator.getGenerated(ejsData, argv);
+        generated && testGenerator.writeGenerated(generated, argv);
         errors.forEach(e => console.error(e));
     }
     catch (e) {

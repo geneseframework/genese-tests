@@ -25,18 +25,21 @@ export class InjectableTestGen extends TestGen {
     }
 
     getData () {
-        // console.log('HEREEEEE')
         console.log('KINDDDD', this.klass?.node?.getKindName());
-        // console.log('HEREEEEE AGAIIINNNNN')
         const ejsData = {
             // className: 'Unknown',
             className: this.klass.node?.getName() ?? 'Unknown',
             // className: this.klass.node.name.escapedText,
+            importMocks: this.getImportMocks(),
+            inputMocks: this.getInputMocks(),
+            outputMocks: this.getOutputMocks(),
+            componentProviderMocks: this.getComponentProviderMocks(),
+            selector: this.getDirectiveSelector(),
             // importMocks: CommonTestGen.getImportMocks.bind(this)(),
-            inputMocks: CommonTestGen.getInputMocks.bind(this)(),
-            outputMocks: CommonTestGen.getOutputMocks.bind(this)(),
-            componentProviderMocks: CommonTestGen.getComponentProviderMocks.bind(this)(),
-            selector: CommonTestGen.getDirectiveSelector.bind(this)(),
+            // inputMocks: CommonTestGen.getInputMocks.bind(this)(),
+            // outputMocks: CommonTestGen.getOutputMocks.bind(this)(),
+            // componentProviderMocks: CommonTestGen.getComponentProviderMocks.bind(this)(),
+            // selector: CommonTestGen.getDirectiveSelector.bind(this)(),
 
             ctorParamJs: undefined, // declarition only, will be set from mockData
             providerMocks: undefined, //  declarition only, will be set from mockData
