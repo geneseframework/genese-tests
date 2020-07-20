@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const injectable_test_gen_1 = require("./src/injectable/injectable-test-gen");
+const util_1 = require("./src/util");
 const fs = require('fs');
 const path = require('path'); // eslint-disable-line
 const yargs = require('yargs');
@@ -9,11 +11,9 @@ const chalk = require('chalk');
 const requireFromString = require('require-from-string');
 const glob = require('glob');
 const config = require('./ngentest.config');
-const Util = require('./src/util.js');
 const FuncTestGen = require('./src/func-test-gen.js');
 const ComponentTestGen = require('./src/component/component-test-gen.js');
 const DirectiveTestGen = require('./src/directive/directive-test-gen.js');
-const InjectableTestGen = require('./src/injectable/injectable-test-gen.js');
 const PipeTestGen = require('./src/pipe/pipe-test-gen.js');
 const ClassTestGen = require('./src/class/class-test-gen.js');
 const argv = yargs.usage('Usage: $0 <tsFile> [options]')
@@ -37,7 +37,7 @@ const argv = yargs.usage('Usage: $0 <tsFile> [options]')
     .example('$0 my.component.ts', 'generate Angular unit test for my.component.ts')
     .help('h')
     .argv;
-Util.DEBUG = argv.verbose;
+util_1.Util.DEBUG = argv.verbose;
 const tsFile = argv._[0].replace(/\.spec\.ts$/, '.ts');
 if (!(tsFile && fs.existsSync(tsFile))) {
     console.error('Error. invalid typescript file. e.g., Usage $0 <tsFile> [options]');
@@ -48,10 +48,10 @@ if (argv.c && fs.existsSync(path.resolve(argv.c))) {
     loadConfig(path.resolve(argv.c));
 }
 else {
-    Util.DEBUG && console.log(`${argv.c} not found. Using default config instead.`);
+    util_1.Util.DEBUG && console.log(`${argv.c} not found. Using default config instead.`);
 }
-Util.DEBUG && console.log('  *** config ***', config);
-Util.FRAMEWORK = config.framework || argv.framework;
+util_1.Util.DEBUG && console.log('  *** config ***', config);
+util_1.Util.FRAMEWORK = config.framework || argv.framework;
 function loadConfig(filePath) {
     const userConfig = require(filePath);
     for (var key in userConfig) {
@@ -69,28 +69,28 @@ function getFuncMockData(Klass, funcName, funcType) {
     };
     funcTestGen.getExpressionStatements().forEach((expr, ndx) => {
         const code = funcTestGen.classCode.substring(expr.start, expr.end);
-        Util.DEBUG && console.log('  *** EXPRESSION ***', ndx, code.replace(/\n+/g, '').replace(/\s+/g, ' '));
+        util_1.Util.DEBUG && console.log('  *** EXPRESSION ***', ndx, code.replace(/\n+/g, '').replace(/\s+/g, ' '));
         funcTestGen.setMockData(expr, funcMockData);
     });
     return funcMockData;
 }
 function getTestGenerator(tsPath, config) {
     const typescript = fs.readFileSync(path.resolve(tsPath), 'utf8');
-    const angularType = Util.getAngularType(typescript).toLowerCase();
+    const angularType = util_1.Util.getAngularType(typescript).toLowerCase();
     const testGenerator = /* eslint-disable */ angularType === 'component' ? new ComponentTestGen(tsPath, config) :
         angularType === 'directive' ? new DirectiveTestGen(tsPath, config) :
-            angularType === 'service' ? new InjectableTestGen(tsPath, config) :
+            angularType === 'service' ? new injectable_test_gen_1.InjectableTestGen(tsPath, config) :
                 angularType === 'pipe' ? new PipeTestGen(tsPath, config) :
                     new ClassTestGen(tsPath, config); /* eslint-enable */
     return testGenerator;
 }
 function getFuncTest(Klass, funcName, funcType, angularType) {
-    Util.DEBUG &&
+    util_1.Util.DEBUG &&
         console.log('\x1b[36m%s\x1b[0m', `\nPROCESSING #${funcName}`);
     const funcMockData = getFuncMockData(Klass, funcName, funcType);
-    const [allFuncMockJS, asserts] = Util.getFuncMockJS(funcMockData, angularType);
+    const [allFuncMockJS, asserts] = util_1.Util.getFuncMockJS(funcMockData, angularType);
     const funcMockJS = [...new Set(allFuncMockJS)];
-    const funcParamJS = Util.getFuncParamJS(funcMockData.params);
+    const funcParamJS = util_1.Util.getFuncParamJS(funcMockData.params);
     const funcAssertJS = asserts.map(el => `// expect(${el.join('.')}).toHaveBeenCalled()`);
     const jsToRun = funcType === 'set' ? `${angularType}.${funcName} = ${funcParamJS || '{}'}` :
         funcType === 'get' ? `const ${funcName} = ${angularType}.${funcName}` :
@@ -111,7 +111,7 @@ function run(tsFile) {
     try {
         const testGenerator = getTestGenerator(tsFile, config);
         const typescript = fs.readFileSync(path.resolve(tsFile), 'utf8');
-        const angularType = Util.getAngularType(typescript).toLowerCase();
+        const angularType = util_1.Util.getAngularType(typescript).toLowerCase();
         const { ejsData } = testGenerator.getData();
         ejsData.config = config;
         // mockData is set after each statement is being analyzed from getFuncMockData
@@ -138,7 +138,7 @@ function run(tsFile) {
         });
         const modjule = requireFromString(replacedOutputText);
         const Klass = modjule[ejsData.className];
-        Util.DEBUG &&
+        util_1.Util.DEBUG &&
             console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
         const ctorMockData = getFuncMockData(Klass, 'constructor', 'constructor');
         console.log('CTORMOCKDATAAAA', ctorMockData);
@@ -150,7 +150,7 @@ function run(tsFile) {
         console.log('CONSTR PARAMSSS', constructorParams);
         const ctorParamJs = constructorParams;
         // const ctorParamJs = Util.getFuncParamJS(ctorMockData.params);
-        ejsData.ctorParamJs = Util.indent(ctorParamJs, ' '.repeat(6)).trim();
+        ejsData.ctorParamJs = util_1.Util.indent(ctorParamJs, ' '.repeat(6)).trim();
         ejsData.providerMocks = testGenerator.getProviderMocks(ctorMockData.params);
         // for (var key in ejsData.providerMocks) {
         //   ejsData.providerMocks[key] = Util.indent(ejsData.providerMocks[key]).replace(/\{\s+\}/gm, '{}');
@@ -159,18 +159,18 @@ function run(tsFile) {
         testGenerator.klassSetters.forEach(setter => {
             const setterName = setter.node.name.escapedText;
             ejsData.accessorTests[`${setterName} SetterDeclaration`] =
-                Util.indent(getFuncTest(Klass, setterName, 'set', angularType), '  ');
+                util_1.Util.indent(getFuncTest(Klass, setterName, 'set', angularType), '  ');
         });
         testGenerator.klassGetters.forEach(getter => {
             const getterName = getter.node.name.escapedText;
             ejsData.accessorTests[`${getterName} GetterDeclaration`] =
-                Util.indent(getFuncTest(Klass, getterName, 'get', angularType), '  ');
+                util_1.Util.indent(getFuncTest(Klass, getterName, 'get', angularType), '  ');
         });
         testGenerator.klassMethods.forEach(method => {
             const methodName = method.node.name.escapedText;
             try {
                 ejsData.functionTests[methodName] =
-                    Util.indent(getFuncTest(Klass, methodName, 'method', angularType), '  ');
+                    util_1.Util.indent(getFuncTest(Klass, methodName, 'method', angularType), '  ');
             }
             catch (e) {
                 const msg = '    // ' + e.stack;
