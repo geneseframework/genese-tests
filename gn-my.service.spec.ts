@@ -14,4 +14,13 @@ describe('GnMyService', () => {
         expect(service).toBeTruthy();
     });
 
+  it('should run #myMethod()', async () => {
+    service.externalService = service.externalService || {};
+    spyOn(service.externalService, 'helloMethod');
+    spyOn(service.externalService, 'doSomething');
+    service.myMethod({});
+    // expect(service.externalService.helloMethod).toHaveBeenCalled();
+    // expect(service.externalService.doSomething).toHaveBeenCalled();
+  });
+
 });

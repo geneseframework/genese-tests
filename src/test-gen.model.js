@@ -94,7 +94,6 @@ class TestGen {
         imports[`./${moduleName}`] = [klassName];
         if (this.klass.get('Constructor').node) {
             const parameters = (_a = this.klass.get('Constructor').node.parameters) !== null && _a !== void 0 ? _a : [];
-            console.log('PARAMSSSS', parameters);
             for (const param of parameters) {
                 const { name, type, decorator } = this.__get(param);
                 const exportName = decorator ? decorator.name : type;
@@ -306,6 +305,7 @@ class TestGen {
         return generated;
     }
     writeToSpecFile(specPath, generated) {
+        console.log('SPEC PATHHHHHHH WRITE', specPath);
         fs.writeFileSync(specPath, generated);
         console.log('Generated unit test to', specPath);
     }
@@ -323,8 +323,9 @@ class TestGen {
     writeGenerated(generated, options) {
         const toFile = options.spec;
         const force = options.force;
-        const specPath = util_1.Util.getFilename(this.tsPath).replace(/\.ts$/, '.spec.ts');
+        const specPath = this.tsPath.replace(/\.ts$/, '.spec.ts');
         // const specPath = path.resolve(this.tsPath.replace(/\.ts$/, '.spec.ts'));
+        console.log('SPECPATHHHHH', specPath);
         generated = generated.replace(/\r\n/g, '\n');
         const specFileExists = fs.existsSync(specPath);
         if (toFile && specFileExists && force) {

@@ -358,6 +358,7 @@ export class TestGen {
     }
 
     writeToSpecFile (specPath, generated) {
+        console.log('SPEC PATHHHHHHH WRITE', specPath)
         fs.writeFileSync(specPath, generated);
         console.log('Generated unit test to', specPath);
     }
@@ -376,8 +377,9 @@ export class TestGen {
     writeGenerated (generated, options) {
         const toFile = options.spec;
         const force = options.force;
-        const specPath = Util.getFilename(this.tsPath).replace(/\.ts$/, '.spec.ts');
+        const specPath = this.tsPath.replace(/\.ts$/, '.spec.ts');
         // const specPath = path.resolve(this.tsPath.replace(/\.ts$/, '.spec.ts'));
+        console.log('SPECPATHHHHH', specPath)
         generated = generated.replace(/\r\n/g, '\n');
 
         const specFileExists = fs.existsSync(specPath);

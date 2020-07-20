@@ -16,7 +16,7 @@ class InjectableTestGen extends test_gen_model_1.TestGen {
         // this.klassProperties = CommonTestGen.getKlassProperties.bind(this)();
         this.klassGetters = this.getKlassGetters();
         this.klassSetters = this.getKlassSetters();
-        // this.klassMethods = this.getKlassMethods();
+        this.klassMethods = this.getKlassMethods();
         // this.getProviderMocks = CommonTestGen.getProviderMocks.bind(this);
         // this.getGenerated = CommonTestGen.getGenerated.bind(this);
         // this.writeGenerated = CommonTestGen.writeGenerated.bind(this);

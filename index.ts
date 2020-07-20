@@ -3,6 +3,7 @@
 import { InjectableTestGen } from './src/injectable/injectable-test-gen';
 import { Util } from './src/util';
 import { FuncTestGen } from './src/func-test-gen';
+import { MethodDeclaration } from 'ts-morph';
 
 const fs = require('fs');
 const path = require('path'); // eslint-disable-line
@@ -189,25 +190,27 @@ function run (tsFile) {
         });
 
         // TODO: uncomment
-        // testGenerator.klassMethods.forEach(method => {
-        //     const methodName = method.node.name.escapedText;
-        //     try {
-        //         ejsData.functionTests[methodName] =
-        //             Util.indent(getFuncTest(Klass, methodName, 'method', angularType), '  ');
-        //     } catch (e) {
-        //         const msg = '    // '+ e.stack;
-        //         const itBlock = `it('should run #${method.name}()', async () => {\n` +
-        //             `${msg.replace(/\n/g, '\n    // ')}\n` +
-        //             `  });\n`
-        //         ejsData.functionTests[methodName] = itBlock;
-        //         errors.push(e);
-        //     }
-        // });
+        testGenerator.klassMethods.forEach(method => {
+            const methodNode = method.node as MethodDeclaration;
+            const methodName = methodNode.getName();
+            console.log('METHOD NAMEEEE', methodName)
+            // const methodName = method.node.name.escapedText;
+            try {
+                ejsData.functionTests[methodName] =
+                    Util.indent(getFuncTest(Klass, methodName, 'method', angularType), '  ');
+            } catch (e) {
+                const msg = '    // '+ e.stack;
+                const itBlock = `it('should run #${method.name}()', async () => {\n` +
+                    `${msg.replace(/\n/g, '\n    // ')}\n` +
+                    `  });\n`
+                ejsData.functionTests[methodName] = itBlock;
+                errors.push(e);
+            }
+        });
 
         // console.log('..................................................................')
         // console.log(ejsData)
         // console.log('..................................................................')
-        // TODO: uncomment
         const generated = testGenerator.getGenerated(ejsData, argv);
         generated && testGenerator.writeGenerated(generated, argv);
 
