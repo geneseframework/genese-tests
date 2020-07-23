@@ -7,15 +7,17 @@ const ejs = require('ejs');
 const fs = require('fs');
 const ts = require('typescript');
 class TestGen {
-    constructor(tsPath, config) {
+    constructor(tsPath) {
         this.typescript = fs.readFileSync(tsPath, 'utf8');
-        this.setTsPath(tsPath, config);
+        this.setTsPath(tsPath);
         this.klass = this.getKlass();
     }
-    setTsPath(tsPath, config) {
+    getData() {
+    }
+    ;
+    setTsPath(tsPath) {
         if (tsPath && fs.existsSync(tsPath)) {
             this.tsPath = tsPath;
-            this.config = config;
         }
         else {
             throw new Error(`Error. invalid typescript file. e.g., Usage $0 ${tsPath} [options]`);

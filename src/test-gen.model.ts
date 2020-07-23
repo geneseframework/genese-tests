@@ -1,9 +1,7 @@
-import { ClassDeclaration, Node } from 'ts-morph';
 import { TypescriptParser } from './typescript-parser';
 import { Util } from './util';
-// import { Util.__toArray } from './common-test-gen';
 import { Klass } from './models/klass.model';
-import { TsNode } from './models/root-node.model';
+
 const ejs = require('ejs');
 const fs = require('fs');
 const ts = require('typescript');
@@ -21,17 +19,20 @@ export class TestGen {
     tsPath;
     typescript;
 
-    constructor(tsPath: string, config) {
+    constructor(tsPath: string) {
         this.typescript = fs.readFileSync(tsPath, 'utf8');
-        this.setTsPath(tsPath, config);
+        this.setTsPath(tsPath);
         this.klass = this.getKlass();
     }
 
 
-    setTsPath(tsPath, config) {
+    getData(): any {
+
+    };
+
+    setTsPath(tsPath) {
         if (tsPath && fs.existsSync(tsPath)) {
             this.tsPath = tsPath;
-            this.config = config;
         } else {
             throw new Error(`Error. invalid typescript file. e.g., Usage $0 ${tsPath} [options]`);
         }
@@ -317,7 +318,8 @@ export class TestGen {
         return existingTests;
     }
 
-    getGenerated(ejsData, options) {
+
+    getGenerated(ejsData, options: any) {
         let generated;
         const funcName = options.method;
         const specPath = this.tsPath.replace(/\.ts$/, '.spec.ts');

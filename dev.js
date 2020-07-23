@@ -12,7 +12,7 @@ try {
     console.log(chalk.yellowBright("PARSER"));
     var mainProcess = new main.TypescriptParser();
     const pathFolderToAnalyze = __dirname + '/src/complexity/core/mocks/';
-    // mainProcess.start(__dirname, pathFolderToAnalyze, __dirname, 'typescript');
+    mainProcess.start(__dirname, pathFolderToAnalyze, __dirname, 'typescript');
 
 }
 catch (err) {

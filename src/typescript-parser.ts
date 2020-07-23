@@ -1,5 +1,4 @@
-
-import { Node, Project, SourceFile, SyntaxKind } from 'ts-morph';
+import { Node, Project, SourceFile } from 'ts-morph';
 import { TsNode } from './models/root-node.model';
 
 /**

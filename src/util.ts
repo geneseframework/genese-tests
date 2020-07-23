@@ -491,17 +491,11 @@ export class Util {
     }
 
     static getMockFn(keys, returns?) { // e.g. x, y, z, {a:1, b:2}
-        if (Util.FRAMEWORK === 'jasmine') {
-            const lastVarName = keys.slice(-1);
-            const baseVarName = keys.slice(0, -1).join('.')
-            const mockFnJS = `spyOn(${baseVarName}, '${lastVarName}')`;
-            const mockReturnJS = returns ? `.and.returnValue(${returns})` : '';
-            return mockFnJS + mockReturnJS;
-        } else {
-            const mockFnJS = `${keys.join('.')} = jest.fn()`;
-            const mockReturnJS = returns ? `.mockReturnValue(${returns})` : '';
-            return mockFnJS + mockReturnJS;
-        }
+        const lastVarName = keys.slice(-1);
+        const baseVarName = keys.slice(0, -1).join('.')
+        const mockFnJS = `spyOn(${baseVarName}, '${lastVarName}')`;
+        const mockReturnJS = returns ? `.and.returnValue(${returns})` : '';
+        return mockFnJS + mockReturnJS;
     }
 
     static getFuncMockJS (mockData, thisName = 'component') {

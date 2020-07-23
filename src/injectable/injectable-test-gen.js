@@ -2,11 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InjectableTestGen = void 0;
 const test_gen_model_1 = require("../test-gen.model");
+const genese_tests_config_1 = require("../../genese-tests.config");
 const CommonTestGen = require('../common-test-gen.js');
 class InjectableTestGen extends test_gen_model_1.TestGen {
-    constructor(tsPath, config) {
-        super(tsPath, config);
-        this.template = config.templates.injectable;
+    constructor(tsPath) {
+        super(tsPath);
+        this.template = genese_tests_config_1.config.templates.injectable;
         // this.imports = CommonTestGen.getImports.bind(this)();
         // this.angularType = CommonTestGen.getAngularType.bind(this)().toLowerCase();
         // this.klassProperties = CommonTestGen.getKlassProperties.bind(this)();

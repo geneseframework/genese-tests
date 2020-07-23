@@ -1,12 +1,13 @@
 import { TestGen } from '../test-gen.model';
+import { config } from '../../genese-tests.config';
 
 const CommonTestGen = require('../common-test-gen.js');
 
 export class InjectableTestGen extends TestGen {
 
 
-    constructor (tsPath, config) {
-        super(tsPath, config);
+    constructor (tsPath) {
+        super(tsPath);
         this.template = config.templates.injectable;
 
         // this.imports = CommonTestGen.getImports.bind(this)();
@@ -20,7 +21,7 @@ export class InjectableTestGen extends TestGen {
         // this.writeGenerated = CommonTestGen.writeGenerated.bind(this);
     }
 
-    getData () {
+    getData(): any {
         const ejsData = {
             className: this.klass.node?.getName() ?? 'Unknown',
             importMocks: this.getImportMocks(),
