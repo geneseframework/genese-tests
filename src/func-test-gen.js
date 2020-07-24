@@ -6,6 +6,7 @@ const jsParser = require('acorn').Parser;
 class FuncTestGen {
     // TODO: differntiate the same name getter/setter function getter/setter
     constructor(Klass, funcName, funcType) {
+        console.log('KLASSSS', Klass);
         this.Klass = Klass;
         this.funcName = funcName;
         this.funcType = funcType; // constructor, get, set, method
