@@ -30,8 +30,6 @@ export class ServiceTestGen extends TestGen {
         ejsData.outputMocks = this.getOutputMocks();
         ejsData.componentProviderMocks = this.getComponentProviderMocks();
         ejsData.selector = this.getDirectiveSelector();
-        ejsData.ctorParamJs = undefined; // declarition only; will be set from mockData
-        ejsData.providerMocks = undefined; //  declarition only; will be set from mockData
         return ejsData;
     }
 

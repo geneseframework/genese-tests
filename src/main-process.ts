@@ -63,13 +63,6 @@ export class MainProcess {
             const typescript = fs.readFileSync(filePath, 'utf8');
             const angularType = Util.getAngularType(typescript).toLowerCase();
             const ejsData: TemplateData = testGenerator.getData();
-            // ejsData.config = config;
-            // mockData is set after each statement is being analyzed from getFuncMockData
-            // ejsData.ctorParamJs; // declaration only, will be set from mockData
-            // ejsData.providerMocks; //  declaration only, will be set from mockData
-            // ejsData.accessorTests = {}; //  declaration only, will be set from mockData
-            // ejsData.functionTests = {}; //  declaration only, will be set from mockData
-
             const result = ts.transpileModule(typescript, {
                 compilerOptions: {
                     module: ts.ModuleKind.CommonJS,
@@ -99,9 +92,9 @@ export class MainProcess {
                 constructorParams = `${constructorParams} undefined,`;
             }
             constructorParams = constructorParams.slice(1, -1);
-            const ctorParamJs = constructorParams;
-// const ctorParamJs = Util.getFuncParamJS(ctorMockData.params);
-            ejsData.ctorParamJs = Util.indent(ctorParamJs, ' '.repeat(6)).trim();
+            // const constructorParams = constructorParams;
+// const constructorParams = Util.getFuncParamJS(ctorMockData.params);
+            ejsData.constructorParams = Util.indent(constructorParams, ' '.repeat(6)).trim();
 // TODO: uncomment
 // ejsData.providerMocks = testGenerator.getProviderMocks(ctorMockData.params);
 // for (var key in ejsData.providerMocks) {
