@@ -1,20 +1,19 @@
 const jsParser = require('acorn').Parser;
-// const path = require('path');
 const indentJs = require('indent.js');
-
 const strFuncRE = /^(slice|trim|substr|replace|split|toLowerCase|toUpperCase|match)$/;
 const arrFuncRE = /^(forEach|map|reduce|slice|filter)$/;
 const obsFuncRE = /^(subscribe|pipe|post|put)$/;
 
-export class Util {
+export var DEBUG = false;
 
-    static __debug;
-    static FRAMEWORK;
-    static get DEBUG () { return !!Util.__debug; }
-    static set DEBUG (bool) { Util.__debug = bool; }
+export class Util {
 
     static getCode(node, code) {
         return code.substring(node.start, node.end);
+    }
+
+    static setDebug(debug: boolean) {
+        DEBUG = debug;
     }
 
     static isFunctionExpr (node) {

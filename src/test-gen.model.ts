@@ -380,7 +380,6 @@ export class TestGen {
         generated = generated.replace(/\r\n/g, '\n');
 
         const specFileExists = fs.existsSync(specPath);
-
         if (toFile && specFileExists && force) {
             this.backupExistingFile(specPath, generated);
             this.writeToSpecFile(specPath, generated);
