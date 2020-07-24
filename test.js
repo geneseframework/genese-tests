@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsNode
 const execSync = require('child_process').execSync;
 const path = require('path');
 const assert = require('assert');

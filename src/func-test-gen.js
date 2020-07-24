@@ -4,9 +4,8 @@ exports.FuncTestGen = void 0;
 const util_1 = require("./util");
 const jsParser = require('acorn').Parser;
 class FuncTestGen {
-    // TODO: differntiate the same name getter/setter function getter/setter
+    // TODO: differentiate the same name getter/setter function getter/setter
     constructor(Klass, funcName, funcType) {
-        console.log('KLASSSS', Klass);
         this.Klass = Klass;
         this.funcName = funcName;
         this.funcType = funcType; // constructor, get, set, method
@@ -50,7 +49,7 @@ class FuncTestGen {
     setMockData(node, mockData, returnValue) {
         if (!node)
             return;
-        // DEBUG && console.log('    *** EXPRESSION ' + node.type + ' ***', this.getCode(node));
+        // DEBUG && console.log('    *** EXPRESSION ' + tsNode.type + ' ***', this.getCode(tsNode));
         if ([
             'BreakStatement',
             'Identifier',
@@ -189,7 +188,7 @@ class FuncTestGen {
             this.setPropsOrParams(kode, mockData, exprReturnValue);
             this.setMockData(node.callee, mockData);
             node.arguments.forEach(argument => this.setMockData(argument, mockData));
-            // const funcExpArg = Util.isFunctionExpr(node) && node.arguments[0];
+            // const funcExpArg = Util.isFunctionExpr(tsNode) && tsNode.arguments[0];
             // if (funcExpArg) { // when call arg is a function, process a FunctionExpression
             //   this.setMockData(funcExpArg, mockData);
             // }

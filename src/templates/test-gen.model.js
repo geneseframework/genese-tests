@@ -62,7 +62,7 @@ class TestGen {
     getImports() {
         const imports = [];
         const parsed = new typescript_parser_1.TypescriptParser(this.typescript);
-        util_1.Util.__toArray(parsed.rootNode.get('ImportDeclaration'))
+        util_1.Util.__toArray(parsed.tsNode.get('ImportDeclaration'))
             .forEach(prop => {
             var _a, _b;
             const moduleName = (_b = (_a = prop.node.moduleSpecifier) === null || _a === void 0 ? void 0 : _a.text) !== null && _b !== void 0 ? _b : 'Unknown';
@@ -117,7 +117,7 @@ class TestGen {
     getKlass() {
         const parsed = new typescript_parser_1.TypescriptParser(this.typescript);
         const fileBasedKlassName = util_1.Util.getClassName(this.tsPath);
-        const klassDeclarations = util_1.Util.__toArray(parsed.rootNode.get('ClassDeclaration'));
+        const klassDeclarations = util_1.Util.__toArray(parsed.tsNode.get('ClassDeclaration'));
         const klass = klassDeclarations.find(decl => decl.node.getName() === fileBasedKlassName) || klassDeclarations[0];
         if (!klass) {
             throw new Error(`Error:TypeScriptParser Could not find ` +

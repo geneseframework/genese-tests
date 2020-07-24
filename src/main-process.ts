@@ -4,13 +4,13 @@ import { MethodDeclaration } from 'ts-morph';
 import * as chalk from 'chalk';
 import { TestGen } from './templates/test-gen.model';
 import * as ts from 'typescript';
+import { TranspileOutput } from 'typescript';
 import { config } from '../genese-tests.config';
 import { Options } from './interfaces/options';
 import { ServiceTestGen } from './templates/service/service-test-gen';
 import { TemplateData } from './models/template-data.model';
-import { TranspileOutput, Type } from 'typescript';
-import { TConstructor } from './interfaces/t-constructor';
 import { FunctionMock } from './interfaces/function-mock.interface';
+
 const fs = require('fs');
 const requireFromString = require('require-from-string');
 const glob = require('glob');
@@ -63,6 +63,7 @@ export class MainProcess {
     run(filePath: string, options: Options): void {
         try {
             const testGenerator: TestGen = this.getTestGenerator(filePath);
+            // console.log('TEST GENNNN', testGenerator)
             const fileContent = fs.readFileSync(filePath, 'utf8');
             const angularType = Util.getAngularType(fileContent).toLowerCase();
             const templateData: TemplateData = testGenerator.getData();
@@ -74,17 +75,7 @@ export class MainProcess {
                     target: ts.ScriptTarget.ES2015
                 }
             });
-
-            // replace invalid require statements
-            let replacedOutputText: string = result.outputText
-                .replace(/require\("\.(.*)"\)/gm, '{}') // replace require statement to a variable, {}
-                .replace(/super\(.*\);/gm, '') // remove inheritance code
-                .replace(/super\./gm, 'this.') // change inheritance call to this call
-                .replace(/\s+extends\s\S+ {/gm, ' extends Object {') // change inheritance to an Object
-
-            config.replacements.forEach( ({from,to}) => {
-                replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
-            })
+            const replacedOutputText = this.replaceInvalidRequireStatements(result);
             const module: object = requireFromString(replacedOutputText);
             const constructor = module[templateData.className];
             // DEBUG && console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
@@ -134,6 +125,20 @@ export class MainProcess {
             console.error(e);
             process.exit(1);
         }
+    }
+
+
+    replaceInvalidRequireStatements(result: TranspileOutput): string {
+        let replacedOutputText: string = result.outputText
+            .replace(/require\("\.(.*)"\)/gm, '{}') // replace require statement to a variable, {}
+            .replace(/super\(.*\);/gm, '') // remove inheritance code
+            .replace(/super\./gm, 'this.') // change inheritance call to this call
+            .replace(/\s+extends\s\S+ {/gm, ' extends Object {') // change inheritance to an Object
+
+        config.replacements.forEach( ({from,to}) => {
+            replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
+        });
+        return replacedOutputText;
     }
 
 

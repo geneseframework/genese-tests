@@ -23,7 +23,7 @@ export class Util {
     }
 
     // returns function parameters as a named object
-    // node.type Identifier, ObjectPattern, ArrayPattern
+    // tsNode.type Identifier, ObjectPattern, ArrayPattern
     // e.g. function >>>> ([a,b,{c,d},[e,f]]) <<<< {} returns ['a', 'b', {c:{}, d: {}}, ['e', 'f']]
     static getObjFromVarPattern(node) {
         if (node.type === 'Identifier') {
