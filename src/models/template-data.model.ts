@@ -5,7 +5,7 @@ export class TemplateData {
     componentProviderMocks: any;
     constructorParams: string = '';
     functionTests: object = {};
-    importMocks: any;
+    importMocks: string[] = [];
     inputMocks: any;
     outputMocks: any;
     providerMocks: any = undefined;

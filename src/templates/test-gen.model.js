@@ -59,28 +59,30 @@ class TestGen {
     }
     // all imports info. from typescript
     // { Component: { moduleName: xxx, alias: xxx } }
-    getImports() {
-        const imports = [];
-        const parsed = new typescript_parser_1.TypescriptParser(this.typescript);
-        util_1.Util.__toArray(parsed.tsNode.get('ImportDeclaration'))
-            .forEach(prop => {
-            var _a, _b;
-            const moduleName = (_b = (_a = prop.node.moduleSpecifier) === null || _a === void 0 ? void 0 : _a.text) !== null && _b !== void 0 ? _b : 'Unknown';
-            const namedImports = prop.get('ImportClause').get('NamedImports');
-            const namespaceImport = prop.get('ImportClause').get('NamespaceImport');
-            if (namespaceImport.node) {
-                const alias = namespaceImport.node.name.escapedText;
-                imports.push({ name: '*', alias, moduleName });
-            }
-            else if (namedImports.node) {
-                namedImports.node.elements.forEach(node => {
-                    const name = node.name.escapedText;
-                    imports.push({ name, alias: undefined, moduleName });
-                });
-            }
-        });
-        return imports;
-    }
+    //     getImports() {
+    //         const imports = [];
+    //
+    //         const parsed = new TypescriptParser(this.typescript);
+    //         Util.__toArray(parsed.tsNode.get('ImportDeclaration'))
+    //             .forEach(prop => {
+    //                 console.log('PROPPPPP', prop)
+    //                 const moduleName = prop.node.moduleSpecifier?.text ?? 'Unknown';
+    //                 const namedImports = prop.get('ImportClause').get('NamedImports');
+    //                 const namespaceImport = prop.get('ImportClause').get('NamespaceImport');
+    //
+    //                 if (namespaceImport.node) {
+    //                     const alias = namespaceImport.node.name.escapedText;
+    //                     imports.push({name: '*', alias, moduleName});
+    //                 } else if (namedImports.node) {
+    //                     namedImports.node.elements.forEach(node => {
+    //                         const name = node.name.escapedText;
+    //                         imports.push({name, alias: undefined, moduleName});
+    //                     })
+    //                 }
+    //             });
+    //
+    //         return imports;
+    //     }
     // import statement mocks;
     getImportMocks() {
         var _a;
@@ -94,6 +96,7 @@ class TestGen {
         imports[`./${moduleName}`] = [klassName];
         if (this.klass.get('Constructor').node) {
             const parameters = (_a = this.klass.get('Constructor').node.parameters) !== null && _a !== void 0 ? _a : [];
+            console.log('PARAMSSSS', parameters);
             for (const param of parameters) {
                 const { name, type, decorator } = this.__get(param);
                 const exportName = decorator ? decorator.name : type;
@@ -106,9 +109,8 @@ class TestGen {
                     imports[emport.moduleName] = (imports[emport.moduleName] || []).concat(importStr);
                 }
             }
-            ;
         }
-        for (var lib in imports) {
+        for (const lib in imports) {
             const fileNames = imports[lib].join(', ');
             importMocks.push(`import { ${fileNames} } from '${lib}';`);
         }

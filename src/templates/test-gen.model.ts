@@ -45,7 +45,7 @@ export abstract class TestGen {
     }
 
 
-    __get(node: any) {
+    __get(node: any): {type: any, name: string, decorator: any} {
         node = node.node || node;
 
         const name = node.name && node.name.escapedText;
@@ -56,16 +56,15 @@ export abstract class TestGen {
         } else if (node.type && node.type.kind) {
             type = ts.SyntaxKind[node.type.kind].replace(/Keyword/,'').toLowerCase()
         }
-
         let decorator;
         if (node.decorators) {
             const name = node.decorators[0].expression.expression.escapedText;
             const param = (node.decorators[0].expression.arguments[0] || {}).text;
             decorator = {name, param}
         }
-
         return {type, name, decorator};
     }
+
 
     __getKlassDecorator(klass: Klass): any {
         const klassDecorator = {};
@@ -86,32 +85,33 @@ export abstract class TestGen {
 
 // all imports info. from typescript
 // { Component: { moduleName: xxx, alias: xxx } }
-    getImports() {
-        const imports = [];
-
-        const parsed = new TypescriptParser(this.typescript);
-        Util.__toArray(parsed.tsNode.get('ImportDeclaration'))
-            .forEach(prop => {
-                const moduleName = prop.node.moduleSpecifier?.text ?? 'Unknown';
-                const namedImports = prop.get('ImportClause').get('NamedImports');
-                const namespaceImport = prop.get('ImportClause').get('NamespaceImport');
-
-                if (namespaceImport.node) {
-                    const alias = namespaceImport.node.name.escapedText;
-                    imports.push({name: '*', alias, moduleName});
-                } else if (namedImports.node) {
-                    namedImports.node.elements.forEach(node => {
-                        const name = node.name.escapedText;
-                        imports.push({name, alias: undefined, moduleName});
-                    })
-                }
-            });
-
-        return imports;
-    }
+//     getImports() {
+//         const imports = [];
+//
+//         const parsed = new TypescriptParser(this.typescript);
+//         Util.__toArray(parsed.tsNode.get('ImportDeclaration'))
+//             .forEach(prop => {
+//                 console.log('PROPPPPP', prop)
+//                 const moduleName = prop.node.moduleSpecifier?.text ?? 'Unknown';
+//                 const namedImports = prop.get('ImportClause').get('NamedImports');
+//                 const namespaceImport = prop.get('ImportClause').get('NamespaceImport');
+//
+//                 if (namespaceImport.node) {
+//                     const alias = namespaceImport.node.name.escapedText;
+//                     imports.push({name: '*', alias, moduleName});
+//                 } else if (namedImports.node) {
+//                     namedImports.node.elements.forEach(node => {
+//                         const name = node.name.escapedText;
+//                         imports.push({name, alias: undefined, moduleName});
+//                     })
+//                 }
+//             });
+//
+//         return imports;
+//     }
 
 // import statement mocks;
-    getImportMocks() {
+    getImportMocks(): string[] {
         const importMocks = [];
         const klassName = this.klass.node.getName();
         const moduleName = Util.getFilename(this.tsPath).replace(/.ts$/, '');
@@ -123,6 +123,7 @@ export abstract class TestGen {
 
         if (this.klass.get('Constructor').node) {
             const parameters = this.klass.get('Constructor').node.parameters ?? [];
+            console.log('PARAMSSSS', parameters)
             for (const param of parameters) {
                 const {name, type, decorator} = this.__get(param);
                 const exportName = decorator ? decorator.name : type;
@@ -134,10 +135,10 @@ export abstract class TestGen {
                 } else {
                     imports[emport.moduleName] = (imports[emport.moduleName] || []).concat(importStr);
                 }
-            };
+            }
         }
 
-        for (var lib in imports) {
+        for (const lib in imports) {
             const fileNames = imports[lib].join(', ');
             importMocks.push(`import { ${fileNames} } from '${lib}';`)
         }

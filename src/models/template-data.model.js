@@ -6,6 +6,7 @@ class TemplateData {
         this.accessorTests = {};
         this.constructorParams = '';
         this.functionTests = {};
+        this.importMocks = [];
         this.providerMocks = undefined;
     }
 }
