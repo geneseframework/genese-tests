@@ -6,16 +6,14 @@ Angular Unit Test Generator For Components, Directive, Services, and Pipes
 $ npm i genese-tests -g # to run this command anywhere
 $ gt my.component.ts 
 $ gt my.directive.ts -s # write unit test to my.directive.spec.ts
-$ gt my.directive.ts -c ../ngentest.config.js # use the given config file.
+$ gt my.directive.ts -c ../genese-tests.config.js # use the given config file.
 ```
 
 To see the source file and generated examples, please take a look at examples directory.
 https://github.com/allenhwkim/ngentest/tree/master/examples
 
 ## Config
-You can override configuration by creating a file named as `ngentest.config.js` in your application directory and running ngentest from that directory. You can also provide a configuration file using `-c my.config.js`.
-
-  * **framework**: `jest` or `karma`. The default is `jest`. This value determines how function mock and assert is to be done.
+You can override configuration by creating a file named as `genese-tests.config.js` in your application directory and running ngentest from that directory. You can also provide a configuration file using `-c my.config.js`.
 
   * **templates**: template string for each type. Please specify your own template if you want to override
     the default template. There are five types;
