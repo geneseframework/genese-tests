@@ -13,9 +13,8 @@ export class FuncTestGen<T> {
     klassDecl;
 
 
-    // TODO: differntiate the same name getter/setter function getter/setter
+    // TODO: differentiate the same name getter/setter function getter/setter
     constructor (Klass: () => T, funcName, funcType) {
-        console.log('KLASSSS', Klass)
         this.Klass = Klass;
         this.funcName = funcName;
         this.funcType = funcType; // constructor, get, set, method
@@ -62,10 +61,10 @@ export class FuncTestGen<T> {
      * Iterate function expressions one by one
      *  then, sets the given props, params, maps from the expressinns
      */
-    setMockData (node, mockData, returnValue?): void { // node: ExpressionStatement
+    setMockData (node, mockData, returnValue?): void { // tsNode: ExpressionStatement
         if (!node) return;
 
-        // DEBUG && console.log('    *** EXPRESSION ' + node.type + ' ***', this.getCode(node));
+        // DEBUG && console.log('    *** EXPRESSION ' + tsNode.type + ' ***', this.getCode(tsNode));
         if ([
             'BreakStatement',
             'Identifier',
@@ -177,7 +176,7 @@ export class FuncTestGen<T> {
             this.setMockData(node.callee, mockData);
             node.arguments.forEach(argument => this.setMockData(argument, mockData));
 
-            // const funcExpArg = Util.isFunctionExpr(node) && node.arguments[0];
+            // const funcExpArg = Util.isFunctionExpr(tsNode) && tsNode.arguments[0];
             // if (funcExpArg) { // when call arg is a function, process a FunctionExpression
             //   this.setMockData(funcExpArg, mockData);
             // }

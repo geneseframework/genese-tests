@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsNode
 
 import { MainProcess } from './src/main-process';
 import { Util } from './src/util';

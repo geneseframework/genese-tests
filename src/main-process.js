@@ -54,6 +54,7 @@ class MainProcess {
     run(filePath, options) {
         try {
             const testGenerator = this.getTestGenerator(filePath);
+            // console.log('TEST GENNNN', testGenerator)
             const fileContent = fs.readFileSync(filePath, 'utf8');
             const angularType = util_1.Util.getAngularType(fileContent).toLowerCase();
             const templateData = testGenerator.getData();
@@ -65,15 +66,7 @@ class MainProcess {
                     target: ts.ScriptTarget.ES2015
                 }
             });
-            // replace invalid require statements
-            let replacedOutputText = result.outputText
-                .replace(/require\("\.(.*)"\)/gm, '{}') // replace require statement to a variable, {}
-                .replace(/super\(.*\);/gm, '') // remove inheritance code
-                .replace(/super\./gm, 'this.') // change inheritance call to this call
-                .replace(/\s+extends\s\S+ {/gm, ' extends Object {'); // change inheritance to an Object
-            genese_tests_config_1.config.replacements.forEach(({ from, to }) => {
-                replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
-            });
+            const replacedOutputText = this.replaceInvalidRequireStatements(result);
             const module = requireFromString(replacedOutputText);
             const constructor = module[templateData.className];
             // DEBUG && console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
@@ -124,6 +117,17 @@ class MainProcess {
             console.error(e);
             process.exit(1);
         }
+    }
+    replaceInvalidRequireStatements(result) {
+        let replacedOutputText = result.outputText
+            .replace(/require\("\.(.*)"\)/gm, '{}') // replace require statement to a variable, {}
+            .replace(/super\(.*\);/gm, '') // remove inheritance code
+            .replace(/super\./gm, 'this.') // change inheritance call to this call
+            .replace(/\s+extends\s\S+ {/gm, ' extends Object {'); // change inheritance to an Object
+        genese_tests_config_1.config.replacements.forEach(({ from, to }) => {
+            replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
+        });
+        return replacedOutputText;
     }
     getConstructorMock(constructor, funcName, funcType) {
         const funcTestGen = new func_test_gen_1.FuncTestGen(constructor, funcName, funcType);

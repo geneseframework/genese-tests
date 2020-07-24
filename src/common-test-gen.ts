@@ -11,25 +11,25 @@
 // export function __toArray(el) {
 //     // console.log('__TOARRAYYYY el', el)
 //     return Array.isArray(el) ? el :
-//         el && el.node ? [el] :
+//         el && el.tsNode ? [el] :
 //             [];
 // }
 //
-// function __get(node) {
-//     node = node.node || node;
+// function __get(tsNode) {
+//     tsNode = tsNode.tsNode || tsNode;
 //
-//     const name = node.name && node.name.escapedText;
+//     const name = tsNode.name && tsNode.name.escapedText;
 //     let type;
-//     if (node.type && node.type.typeName) {
-//         type = node.type.typeName.escapedText;
-//     } else if (node.type && node.type.kind) {
-//         type = ts.SyntaxKind[node.type.kind].replace(/Keyword/,'').toLowerCase()
+//     if (tsNode.type && tsNode.type.typeName) {
+//         type = tsNode.type.typeName.escapedText;
+//     } else if (tsNode.type && tsNode.type.kind) {
+//         type = ts.SyntaxKind[tsNode.type.kind].replace(/Keyword/,'').toLowerCase()
 //     }
 //
 //     let decorator;
-//     if (node.decorators) {
-//         const name = node.decorators[0].expression.expression.escapedText;
-//         const param = (node.decorators[0].expression.arguments[0] || {}).text;
+//     if (tsNode.decorators) {
+//         const name = tsNode.decorators[0].expression.expression.escapedText;
+//         const param = (tsNode.decorators[0].expression.arguments[0] || {}).text;
 //         decorator = {name, param}
 //     }
 //
@@ -44,8 +44,8 @@
 //         .get('PropertyAssignment')
 //
 //     __toArray(props).forEach(el => {
-//         const key = el.children[0].node.escapedText;
-//         const value = el.children[1].node;
+//         const key = el.children[0].tsNode.escapedText;
+//         const value = el.children[1].tsNode;
 //         klassDecorator[key] = value;
 //     });
 //
@@ -59,18 +59,18 @@
 //     const imports = [];
 //
 //     const parsed = new tp.TypescriptParser(this.typescript);
-//     __toArray(parsed.rootNode.get('ImportDeclaration'))
+//     __toArray(parsed.tsNode.get('ImportDeclaration'))
 //         .map(prop => {
-//             const moduleName = prop.node.moduleSpecifier?.text ?? 'Unknown';
+//             const moduleName = prop.tsNode.moduleSpecifier?.text ?? 'Unknown';
 //             const namedImports = prop.get('ImportClause').get('NamedImports');
 //             const namespaceImport = prop.get('ImportClause').get('NamespaceImport');
 //
-//             if (namespaceImport.node) {
-//                 const alias = namespaceImport.node.name.escapedText;
+//             if (namespaceImport.tsNode) {
+//                 const alias = namespaceImport.tsNode.name.escapedText;
 //                 imports.push({name: '*', alias, moduleName});
-//             } else if (namedImports.node) {
-//                 namedImports.node.elements.forEach(node => {
-//                     const name = node.name.escapedText;
+//             } else if (namedImports.tsNode) {
+//                 namedImports.tsNode.elements.forEach(tsNode => {
+//                     const name = tsNode.name.escapedText;
 //                     imports.push({name, alias: undefined, moduleName});
 //                 })
 //             }
@@ -96,10 +96,9 @@
 // function getKlass() {
 //     const parsed = new tp.TypescriptParser(this.typescript);
 //     const fileBasedKlassName = Util.getClassName(this.tsPath);
-//     const klassDeclarations = __toArray(parsed.rootNode.get('ClassDeclaration'));
-//     const klass = klassDeclarations.find(decl => decl.node.getName() === fileBasedKlassName) || klassDeclarations[0];
+//     const klassDeclarations = __toArray(parsed.tsNode.get('ClassDeclaration'));
+//     const klass = klassDeclarations.find(decl => decl.tsNode.getName() === fileBasedKlassName) || klassDeclarations[0];
 //
-//     // console.log('KLASSSSSS', klass)
 //     if (!klass) {
 //         throw new Error(`Error:TypeScriptParser Could not find ` +
 //             `${fileBasedKlassName || 'a class'} from ${this.tsPath}`);
@@ -115,8 +114,8 @@
 // // import statement mocks;
 // function getImportMocks() {
 //     const importMocks = [];
-//     const klassName = this.klass.node.getName();
-//     // const klassName = this.klass.node.name.escapedText;
+//     const klassName = this.klass.tsNode.getName();
+//     // const klassName = this.klass.tsNode.name.escapedText;
 //     const moduleName = path.basename(this.tsPath).replace(/.ts$/, '');
 //
 //     const imports = {};
@@ -125,8 +124,8 @@
 //     }
 //     imports[`./${moduleName}`] = [klassName]
 //
-//     if (this.klass.get('Constructor').node) {
-//         const paremeters = this.klass.get('Constructor').node.parameters;
+//     if (this.klass.get('Constructor').tsNode) {
+//         const paremeters = this.klass.get('Constructor').tsNode.parameters;
 //         paremeters.forEach(param => {
 //             const {name, type, decorator} = __get(param);
 //             const exportName = decorator ? decorator.name : type;
@@ -151,11 +150,11 @@
 //
 // function getProviderMocks(ctorMockData) {
 //     const providerMocks = {providers: [], mocks: []};
-//     if (!this.klass.get('Constructor').node) {
+//     if (!this.klass.get('Constructor').tsNode) {
 //         return providerMocks;
 //     }
 //
-//     const paremeters = this.klass.get('Constructor').node.parameters
+//     const paremeters = this.klass.get('Constructor').tsNode.parameters
 //     paremeters.forEach(param => {
 //         const {name, type, decorator} = __get(param);
 //         const injectClassName = decorator && decorator.name === 'Inject' && decorator.param;

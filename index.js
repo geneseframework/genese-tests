@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsNode
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const main_process_1 = require("./src/main-process");
