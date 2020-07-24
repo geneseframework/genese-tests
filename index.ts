@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { MainProcess } from './src/main-process';
-import { DEBUG, Util } from './src/util';
+import { Util } from './src/util';
 
 const fs = require('fs');
 const yargs = require('yargs');

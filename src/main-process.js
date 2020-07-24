@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MainProcess = void 0;
 const func_test_gen_1 = require("./func-test-gen");
 const util_1 = require("./util");
-const injectable_test_gen_1 = require("./injectable/injectable-test-gen");
 const chalk = require("chalk");
 const ts = require("typescript");
 const genese_tests_config_1 = require("../genese-tests.config");
+const service_test_gen_1 = require("./templates/service/service-test-gen");
 const fs = require('fs');
 const requireFromString = require('require-from-string');
 const glob = require('glob');
@@ -14,7 +14,7 @@ const pathModule = require('path'); // eslint-disable-line
 class MainProcess {
     start(path, options) {
         console.log(chalk.blueBright('START PROCESS'));
-        this.setConfig(options === null || options === void 0 ? void 0 : options.c);
+        this.setConfig(options === null || options === void 0 ? void 0 : options.config);
         const isDir = fs.lstatSync(path).isDirectory();
         if (isDir) {
             const files = glob.sync('**/!(*.spec).ts', { cwd: path });
@@ -57,7 +57,7 @@ class MainProcess {
             const typescript = fs.readFileSync(filePath, 'utf8');
             const angularType = util_1.Util.getAngularType(typescript).toLowerCase();
             const { ejsData } = testGenerator.getData();
-            ejsData.config = genese_tests_config_1.config;
+            // ejsData.config = config;
             // mockData is set after each statement is being analyzed from getFuncMockData
             ejsData.ctorParamJs; // declaration only, will be set from mockData
             ejsData.providerMocks; //  declaration only, will be set from mockData
@@ -80,7 +80,9 @@ class MainProcess {
             genese_tests_config_1.config.replacements.forEach(({ from, to }) => {
                 replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
             });
+            console.log('REPLTXTTTT', replacedOutputText);
             const module = requireFromString(replacedOutputText);
+            console.log('EJSDATAAAA', ejsData);
             const Klass = module[ejsData.className];
             // DEBUG && console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
             const ctorMockData = this.getFuncMockData(Klass, 'constructor', 'constructor');
@@ -160,11 +162,11 @@ class MainProcess {
         // const testGenerator = /* eslint-disable */
         //     angularType === 'component' ? new ComponentTestGen(tsPath, config) :
         //         angularType === 'directive' ? new DirectiveTestGen(tsPath, config) :
-        //             angularType === 'service' ? new InjectableTestGen(tsPath, config) :
+        //             angularType === 'service' ? new ServiceTestGen(tsPath, config) :
         //                 angularType === 'pipe' ? new PipeTestGen(tsPath, config) :
         //                     new ClassTestGen(tsPath, config); /* eslint-enable */
         // return testGenerator;
-        return new injectable_test_gen_1.InjectableTestGen(tsPath);
+        return new service_test_gen_1.ServiceTestGen(tsPath);
     }
     getFuncTest(Klass, funcName, funcType, angularType) {
         // DEBUG && console.log('\x1b[36m%s\x1b[0m', `\nPROCESSING #${funcName}`);

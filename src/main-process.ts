@@ -1,11 +1,13 @@
 import { FuncTestGen } from './func-test-gen';
 import { DEBUG, Util } from './util';
-import { InjectableTestGen } from './injectable/injectable-test-gen';
 import { MethodDeclaration } from 'ts-morph';
 import * as chalk from 'chalk';
-import { TestGen } from './test-gen.model';
+import { TestGen } from './templates/test-gen.model';
 import * as ts from 'typescript';
 import { config } from '../genese-tests.config';
+import { Options } from './interfaces/options';
+import { ServiceTestGen } from './templates/service/service-test-gen';
+import { TemplateData } from './models/template-data.model';
 const fs = require('fs');
 const requireFromString = require('require-from-string');
 const glob = require('glob');
@@ -14,9 +16,9 @@ const pathModule = require('path'); // eslint-disable-line
 export class MainProcess {
 
 
-    start(path: string, options: any): void {
+    start(path: string, options: Options): void {
         console.log(chalk.blueBright('START PROCESS'));
-        this.setConfig(options?.c);
+        this.setConfig(options?.config);
         const isDir = fs.lstatSync(path).isDirectory();
         if (isDir) {
             const files = glob.sync('**/!(*.spec).ts', {cwd: path})
@@ -55,14 +57,14 @@ export class MainProcess {
     }
 
 
-    run(filePath: string, options: any): void {
+    run(filePath: string, options: Options): void {
         try {
             const testGenerator = this.getTestGenerator(filePath);
             const typescript = fs.readFileSync(filePath, 'utf8');
             const angularType = Util.getAngularType(typescript).toLowerCase();
-            const {ejsData} = testGenerator.getData();
+            const {ejsData}: TemplateData = testGenerator.getData();
 
-            ejsData.config = config;
+            // ejsData.config = config;
             // mockData is set after each statement is being analyzed from getFuncMockData
             ejsData.ctorParamJs; // declaration only, will be set from mockData
             ejsData.providerMocks; //  declaration only, will be set from mockData
@@ -88,8 +90,9 @@ export class MainProcess {
             config.replacements.forEach( ({from,to}) => {
                 replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
             })
-
+            console.log('REPLTXTTTT', replacedOutputText)
             const module = requireFromString(replacedOutputText);
+            console.log('EJSDATAAAA', ejsData)
             const Klass = module[ejsData.className];
             // DEBUG && console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
             const ctorMockData = this.getFuncMockData(Klass, 'constructor', 'constructor');
@@ -177,11 +180,11 @@ export class MainProcess {
         // const testGenerator = /* eslint-disable */
         //     angularType === 'component' ? new ComponentTestGen(tsPath, config) :
         //         angularType === 'directive' ? new DirectiveTestGen(tsPath, config) :
-        //             angularType === 'service' ? new InjectableTestGen(tsPath, config) :
+        //             angularType === 'service' ? new ServiceTestGen(tsPath, config) :
         //                 angularType === 'pipe' ? new PipeTestGen(tsPath, config) :
         //                     new ClassTestGen(tsPath, config); /* eslint-enable */
         // return testGenerator;
-        return new InjectableTestGen(tsPath);
+        return new ServiceTestGen(tsPath);
     }
 
     getFuncTest(Klass, funcName, funcType, angularType) {

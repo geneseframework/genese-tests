@@ -10,7 +10,6 @@ class TypescriptParser {
     constructor(code) {
         const sourceFile = exports.project.createSourceFile('temp.ts', code, { overwrite: true });
         this.rootNode = this.getRecursiveFrom(sourceFile, sourceFile);
-        // console.log('ROOTNODE', this.rootNode.children)
     }
     getRecursiveFrom(node, sourceFile) {
         const syntaxKind = node.getKindName();
