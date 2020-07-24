@@ -30,23 +30,26 @@ export class FuncTestGen<T> {
         }
     }
 
+
     getCode (node) {
         return this.classCode.substring(node.start, node.end);
     }
 
-    getInitialParameters () {
+
+    getInitialParameters(): object {
         const params = {};
-        // TODO:  differntiate the same name function getter/setter
+        // TODO:  differentiate the same name function getter/setter
         const methodDefinition = this.klassDecl.body.body.find(node => {
             return (node.kind === this.funcType) && (node.key.name === this.funcName);
         });
-        if (methodDefinition) {
+        if (methodDefinition?.value?.params) {
             methodDefinition.value.params.forEach(el => (params[el.name] = {}));
         }
         return params;
     }
 
-    getExpressionStatements () {
+
+    getExpressionStatements(): any[] {
         const methodDefinition = this.klassDecl.body.body.find(node => node.key.name === this.funcName);
         if (methodDefinition) {
             const block = methodDefinition.value.body;
@@ -59,7 +62,7 @@ export class FuncTestGen<T> {
      * Iterate function expressions one by one
      *  then, sets the given props, params, maps from the expressinns
      */
-    setMockData (node, mockData, returnValue?) { // node: ExpressionStatement
+    setMockData (node, mockData, returnValue?): void { // node: ExpressionStatement
         if (!node) return;
 
         // DEBUG && console.log('    *** EXPRESSION ' + node.type + ' ***', this.getCode(node));

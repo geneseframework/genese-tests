@@ -3,7 +3,7 @@ export class TemplateData {
     accessorTests: object = {};
     className: string;
     componentProviderMocks: any;
-    constructorParams: any = undefined;
+    constructorParams: string = '';
     functionTests: object = {};
     importMocks: any;
     inputMocks: any;

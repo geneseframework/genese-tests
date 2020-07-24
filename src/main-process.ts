@@ -8,8 +8,9 @@ import { config } from '../genese-tests.config';
 import { Options } from './interfaces/options';
 import { ServiceTestGen } from './templates/service/service-test-gen';
 import { TemplateData } from './models/template-data.model';
-import { Type } from 'typescript';
+import { TranspileOutput, Type } from 'typescript';
 import { TConstructor } from './interfaces/t-constructor';
+import { FunctionMock } from './interfaces/function-mock.interface';
 const fs = require('fs');
 const requireFromString = require('require-from-string');
 const glob = require('glob');
@@ -65,7 +66,7 @@ export class MainProcess {
             const fileContent = fs.readFileSync(filePath, 'utf8');
             const angularType = Util.getAngularType(fileContent).toLowerCase();
             const templateData: TemplateData = testGenerator.getData();
-            const result = ts.transpileModule(fileContent, {
+            const result: TranspileOutput = ts.transpileModule(fileContent, {
                 compilerOptions: {
                     module: ts.ModuleKind.CommonJS,
                     experimentalDecorators: true,
@@ -93,8 +94,6 @@ export class MainProcess {
                 constructorParams = `${constructorParams} undefined,`;
             }
             constructorParams = constructorParams.slice(1, -1);
-            // const constructorParams = constructorParams;
-// const constructorParams = Util.getFuncParamJS(ctorMockData.params);
             templateData.constructorParams = Util.indent(constructorParams, ' '.repeat(6)).trim();
 // TODO: uncomment
 // ejsData.providerMocks = testGenerator.getProviderMocks(ctorMockData.params);
@@ -106,21 +105,19 @@ export class MainProcess {
             testGenerator.klassSetters.forEach(setter => {
                 const setterName = setter.node.name.escapedText;
                 templateData.accessorTests[`${setterName} SetterDeclaration`] =
-                    Util.indent(this.getConstructorTest(constructor, setterName, 'set', angularType), '  ');
+                    Util.indent(this.getFunctionTest(constructor, setterName, 'set', angularType), '  ');
             });
             testGenerator.klassGetters.forEach(getter => {
                 const getterName = getter.node.name.escapedText;
                 templateData.accessorTests[`${getterName} GetterDeclaration`] =
-                    Util.indent(this.getConstructorTest(constructor, getterName, 'get', angularType), '  ');
+                    Util.indent(this.getFunctionTest(constructor, getterName, 'get', angularType), '  ');
             });
-
-// TODO: uncomment
             testGenerator.klassMethods.forEach(method => {
                 const methodNode = method.node as MethodDeclaration;
                 const methodName = methodNode.getName();
                 try {
                     templateData.functionTests[methodName] =
-                        Util.indent(this.getConstructorTest(constructor, methodName, 'method', angularType), '  ');
+                        Util.indent(this.getFunctionTest(constructor, methodName, 'method', angularType), '  ');
                 } catch (e) {
                     const msg = '    // '+ e.stack;
                     const itBlock = `it('should run #${method.name}()', async () => {\n` +
@@ -130,14 +127,8 @@ export class MainProcess {
                     errors.push(e);
                 }
             });
-
-// console.log('..................................................................')
-// console.log(ejsData)
-// console.log('..................................................................')
-
             const generated = testGenerator.getGenerated(templateData, options);
             generated && testGenerator.writeGenerated(generated, options);
-
             errors.forEach( e => console.error(e) );
         } catch (e) {
             console.error(e);
@@ -146,7 +137,7 @@ export class MainProcess {
     }
 
 
-    getConstructorMock<T>(constructor: () => T, funcName: string, funcType: string) {
+    getConstructorMock<T>(constructor: () => T, funcName: string, funcType: string): FunctionMock {
         const funcTestGen = new FuncTestGen(constructor, funcName, funcType);
         const funcMockData = {
             isAsync: funcTestGen.isAsync,
@@ -160,7 +151,6 @@ export class MainProcess {
             // DEBUG && console.log('  *** EXPRESSION ***', ndx, code.replace(/\n+/g, '').replace(/\s+/g, ' '));
             funcTestGen.setMockData(expr, funcMockData);
         });
-
         return funcMockData;
     }
 
@@ -180,7 +170,7 @@ export class MainProcess {
     }
 
 
-    getConstructorTest<T>(constructor: () => T, funcName, funcType, angularType): string {
+    getFunctionTest<T>(constructor: () => T, funcName, funcType, angularType): string {
         // DEBUG && console.log('\x1b[36m%s\x1b[0m', `\nPROCESSING #${funcName}`);
 
         const funcMockData = this.getConstructorMock(constructor, funcName, funcType);
@@ -200,12 +190,12 @@ export class MainProcess {
         const asyncStr = funcMockData.isAsync ? 'await ' : '';
 
         return `
-    it('${itBlockName}', async () => {
-      ${funcMockJS.join(';\n')}${funcMockJS.length ? ';' : ''}
-      ${asyncStr}${jsToRun};
-      ${funcAssertJS.join(';\n')}${funcAssertJS.length ? ';' : ''}
-    });
-    `;
+            it('${itBlockName}', async () => {
+              ${funcMockJS.join(';\n')}${funcMockJS.length ? ';' : ''}
+              ${asyncStr}${jsToRun};
+              ${funcAssertJS.join(';\n')}${funcAssertJS.length ? ';' : ''}
+            });
+            `;
     }
 
 }
