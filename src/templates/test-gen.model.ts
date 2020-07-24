@@ -1,9 +1,11 @@
 import { TypescriptParser } from '../typescript-parser';
-import { Util } from '../util';
+import { project, Util } from '../util';
 import { Klass } from '../models/klass.model';
 import * as chalk from 'chalk';
 import { Options } from '../interfaces/options';
 import { TemplateData } from '../models/template-data.model';
+import { TsNode } from '../models/ts-node.model';
+import { SourceFile } from 'ts-morph';
 
 const ejs = require('ejs');
 const fs = require('fs');
@@ -19,11 +21,13 @@ export abstract class TestGen {
     klassGetters;
     klassSetters;
     template;
+    sourceFile: SourceFile = undefined;
     tsPath;
     typescript;
 
     protected constructor(tsPath: string) {
         this.typescript = fs.readFileSync(tsPath, 'utf8');
+        this.sourceFile = project.getSourceFileOrThrow(tsPath);
         this.setTsPath(tsPath);
         this.klass = this.getKlass();
     }
@@ -111,7 +115,7 @@ export abstract class TestGen {
     }
 
 // import statement mocks;
-    getImportMocks() {
+    getImportMocks(): string[] {
         const importMocks = [];
         const klassName = this.klass.node.getName();
         const moduleName = Util.getFilename(this.tsPath).replace(/.ts$/, '');

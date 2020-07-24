@@ -1,12 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Util = exports.DEBUG = void 0;
+exports.Util = exports.project = exports.DEBUG = void 0;
+const ts_morph_1 = require("ts-morph");
 const jsParser = require('acorn').Parser;
 const indentJs = require('indent.js');
 const strFuncRE = /^(slice|trim|substr|replace|split|toLowerCase|toUpperCase|match)$/;
 const arrFuncRE = /^(forEach|map|reduce|slice|filter)$/;
 const obsFuncRE = /^(subscribe|pipe|post|put)$/;
 exports.DEBUG = false;
+/**
+ * The project to analyse
+ */
+exports.project = new ts_morph_1.Project();
 class Util {
     static getCode(node, code) {
         return code.substring(node.start, node.end);

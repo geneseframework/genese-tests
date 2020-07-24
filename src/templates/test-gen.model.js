@@ -4,12 +4,15 @@ exports.TestGen = void 0;
 const typescript_parser_1 = require("../typescript-parser");
 const util_1 = require("../util");
 const chalk = require("chalk");
+const ts_node_model_1 = require("../models/ts-node.model");
 const ejs = require('ejs');
 const fs = require('fs');
 const ts = require('typescript');
 class TestGen {
     constructor(tsPath) {
+        this.tsNode = undefined;
         this.typescript = fs.readFileSync(tsPath, 'utf8');
+        this.tsNode = new ts_node_model_1.TsNode();
         this.setTsPath(tsPath);
         this.klass = this.getKlass();
     }

@@ -1,5 +1,5 @@
 import { FuncTestGen } from './func-test-gen';
-import { DEBUG, Util } from './util';
+import { DEBUG, project, Util } from './util';
 import { MethodDeclaration } from 'ts-morph';
 import * as chalk from 'chalk';
 import { TestGen } from './templates/test-gen.model';
@@ -25,6 +25,7 @@ export class MainProcess {
         const isDir = fs.lstatSync(path).isDirectory();
         if (isDir) {
             const files = glob.sync('**/!(*.spec).ts', {cwd: path})
+            project.addSourceFilesAtPaths('**/!(*.spec).ts');
             files.forEach(file => {
                 const includeMatch = config.includeMatch.map(re => file.match(re)).some(e => !!e);
                 const excludeMatch = config.excludeMatch.map(re => file.match(re)).some(e => !!e);
@@ -38,6 +39,7 @@ export class MainProcess {
                 }
             });
         } else {
+            project.addSourceFilesAtPaths(path);
             this.run(path, options);
         }
     }

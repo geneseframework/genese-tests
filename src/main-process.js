@@ -18,6 +18,7 @@ class MainProcess {
         const isDir = fs.lstatSync(path).isDirectory();
         if (isDir) {
             const files = glob.sync('**/!(*.spec).ts', { cwd: path });
+            util_1.project.addSourceFilesAtPaths('**/!(*.spec).ts');
             files.forEach(file => {
                 const includeMatch = genese_tests_config_1.config.includeMatch.map(re => file.match(re)).some(e => !!e);
                 const excludeMatch = genese_tests_config_1.config.excludeMatch.map(re => file.match(re)).some(e => !!e);
@@ -34,6 +35,7 @@ class MainProcess {
             });
         }
         else {
+            util_1.project.addSourceFilesAtPaths(path);
             this.run(path, options);
         }
     }

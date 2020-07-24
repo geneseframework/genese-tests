@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TypescriptParser = exports.project = void 0;
 const ts_morph_1 = require("ts-morph");
-const ts_node_model_1 = require("./models/ts-node.model");
+const ts_node_tests_model_1 = require("./models/ts-node-tests.model");
 /**
  * The project to analyse
  */
@@ -27,7 +27,7 @@ class TypescriptParser {
                 all.length === 1 ? all[0] :
                     all;
         };
-        const tsNode = new ts_node_model_1.TsNode();
+        const tsNode = new ts_node_tests_model_1.TsNodeTests();
         tsNode.node = node;
         tsNode.syntaxKind = syntaxKind;
         tsNode.nodeText = nodeText;

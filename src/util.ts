@@ -1,3 +1,5 @@
+import { Project } from 'ts-morph';
+
 const jsParser = require('acorn').Parser;
 const indentJs = require('indent.js');
 const strFuncRE = /^(slice|trim|substr|replace|split|toLowerCase|toUpperCase|match)$/;
@@ -5,6 +7,11 @@ const arrFuncRE = /^(forEach|map|reduce|slice|filter)$/;
 const obsFuncRE = /^(subscribe|pipe|post|put)$/;
 
 export var DEBUG = false;
+
+/**
+ * The project to analyse
+ */
+export let project  = new Project();
 
 export class Util {
 

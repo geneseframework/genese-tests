@@ -1,5 +1,5 @@
 import { Node, Project, SourceFile } from 'ts-morph';
-import { TsNode } from './models/ts-node.model';
+import { TsNodeTests } from './models/ts-node-tests.model';
 
 /**
  * The project to analyse
@@ -9,7 +9,7 @@ export let project  = new Project();
 
 export class TypescriptParser {
 
-    tsNode: TsNode;
+    tsNode: TsNodeTests;
 
     constructor(code: string) {
         const sourceFile = project.createSourceFile('temp.ts', code, {overwrite: true});
@@ -17,7 +17,7 @@ export class TypescriptParser {
     }
 
 
-    getRecursiveFrom(node: Node, sourceFile: SourceFile): TsNode {
+    getRecursiveFrom(node: Node, sourceFile: SourceFile): TsNodeTests {
         const syntaxKind = node.getKindName();
         const nodeText = node.getText(sourceFile as any);
         const children = [];
@@ -32,7 +32,7 @@ export class TypescriptParser {
                 all.length === 1 ? all[0] :
                     all;
         }
-        const tsNode = new TsNode();
+        const tsNode = new TsNodeTests();
         tsNode.node = node;
         tsNode.syntaxKind = syntaxKind;
         tsNode.nodeText = nodeText;
