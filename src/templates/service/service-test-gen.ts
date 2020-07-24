@@ -42,7 +42,7 @@ export class ServiceTestGen extends TestGen {
             functionTests: undefined //  declarition only, will be set from mockData
         }
 
-        return {ejsData};
+        return ejsData;
     }
 
 }
