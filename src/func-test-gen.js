@@ -24,12 +24,13 @@ class FuncTestGen {
         return this.classCode.substring(node.start, node.end);
     }
     getInitialParameters() {
+        var _a;
         const params = {};
-        // TODO:  differntiate the same name function getter/setter
+        // TODO:  differentiate the same name function getter/setter
         const methodDefinition = this.klassDecl.body.body.find(node => {
             return (node.kind === this.funcType) && (node.key.name === this.funcName);
         });
-        if (methodDefinition) {
+        if ((_a = methodDefinition === null || methodDefinition === void 0 ? void 0 : methodDefinition.value) === null || _a === void 0 ? void 0 : _a.params) {
             methodDefinition.value.params.forEach(el => (params[el.name] = {}));
         }
         return params;

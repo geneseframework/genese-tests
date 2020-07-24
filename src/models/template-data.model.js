@@ -4,7 +4,7 @@ exports.TemplateData = void 0;
 class TemplateData {
     constructor() {
         this.accessorTests = {};
-        this.constructorParams = undefined;
+        this.constructorParams = '';
         this.functionTests = {};
         this.providerMocks = undefined;
     }
