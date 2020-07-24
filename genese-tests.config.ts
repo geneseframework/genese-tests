@@ -6,9 +6,9 @@ const directiveTemplate = fs.readFileSync(path.join(__dirname, 'src', 'directive
 const injectableTemplate = fs.readFileSync(path.join(__dirname, 'src', 'injectable', 'injectable.template.ts.ejs'), 'utf8');
 const pipeTemplate = fs.readFileSync(path.join(__dirname, 'src', 'pipe', 'pipe.template.ts.ejs'), 'utf8');
 
-module.exports = {
-  framework: 'jasmine', // or 'jest'
-  // .spec file EJS templtes
+export const config = {
+  framework: 'jasmine',
+  // .spec file EJS templates
   templates: {
     klass: klassTemplate,
     component: componentTemplate,

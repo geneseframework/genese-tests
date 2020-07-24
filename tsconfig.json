@@ -1,8 +1,20 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "lib": [ "es2015" ],
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  }
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "downlevelIteration": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "target": "es2018",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "lib": [
+            "es2018",
+            "dom"
+        ]
+    },
+    "exclude": ["node_modules"],
+    "include": ["src"],
+    "files": ["index.ts"]
 }

@@ -1,0 +1,14 @@
+{
+  "name": "genese-test",
+  "version": "0.0.0",
+  "description": "Unit test generator for Angular apps",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [
+    "Angular",
+    "Unit",
+    "Test"
+  ],
+  "author": "Gilles Fabre",
+  "license": "MIT"
+}

@@ -1,60 +1,63 @@
 {
-  "name": "genese-test",
-  "version": "0.0.2",
-  "description": "Angular Unit Test Generator For Components, Directive, Services, and Pipes",
-  "main": "index.js",
-  "engines": {
-    "node": ">=8.6.0",
-    "npm": ">=6.1"
-  },
-  "scripts": {
-    "replace": "npm unpublish genese-test --force && npm publish && npm i -g genese-test",
-    "test": "node test.js"
-  },
-  "author": {
-    "name": "Gilles Fabre",
-    "url": "http://gillesfabre.com/"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/geneseframework/genese"
-  },
-  "bin": {
-    "genese-tests": "index.js",
-    "gt": "index.js"
-  },
-  "keywords": [
-    "angular",
-    "generate",
-    "unit",
-    "test",
-    "cli"
-  ],
-  "dependencies": {
-    "acorn": "^7.1.0",
-    "chalk": "^4.1.0",
-    "check-engines": "^1.5.0",
-    "ejs": "^2.6.1",
-    "indent.js": "^0.3.4",
-    "js-beautify": "^1.10.2",
-    "require-from-string": "^2.0.2",
-    "typescript": "^3.9.7",
-    "yargs": "^11.0.0"
-  },
-  "devDependencies": {
-    "@angular/animations": "^8.2.14",
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "@angular/forms": "^8.2.14",
-    "@angular/platform-browser": "^8.2.14",
-    "@angular/router": "^8.2.14",
-    "@ngx-translate/core": "^11.0.1",
-    "chart.js": "^2.9.3",
-    "crypto-js": "^3.1.9-1",
-    "date-fns": "^2.0.0",
-    "html-custom-element": "^0.6.3",
-    "rxjs": "^6.5.3",
-    "ts-node": "^8.4.1"
-  }
+    "name": "genese-test",
+    "version": "0.0.2",
+    "description": "Angular Unit Test Generator For Components, Directive, Services, and Pipes",
+    "main": "index.js",
+    "engines": {
+        "node": ">=8.6.0",
+        "npm": ">=6.1"
+    },
+    "scripts": {
+        "dev": "tsc && node dev.js",
+        "replace": "tsc && npm unpublish genese-test --force && npm publish && npm i -g genese-test",
+        "test": "node test.js"
+    },
+    "author": {
+        "name": "Gilles Fabre",
+        "url": "http://gillesfabre.com/"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/geneseframework/genese"
+    },
+    "bin": {
+        "genese-tests": "index.js",
+        "gt": "index.js"
+    },
+    "keywords": [
+        "angular",
+        "generate",
+        "unit",
+        "test",
+        "cli"
+    ],
+    "dependencies": {
+        "@types/node": "^14.0.23",
+        "acorn": "^7.3.1",
+        "chalk": "^4.1.0",
+        "check-engines": "^1.5.0",
+        "ejs": "^2.6.1",
+        "indent.js": "^0.3.4",
+        "js-beautify": "^1.11.0",
+        "require-from-string": "^2.0.2",
+        "ts-morph": "^7.1.2",
+        "typescript": "^3.9.7",
+        "yargs": "^11.0.0"
+    },
+    "devDependencies": {
+        "@angular/animations": "^8.2.14",
+        "@angular/common": "^8.2.14",
+        "@angular/core": "^8.2.14",
+        "@angular/forms": "^8.2.14",
+        "@angular/platform-browser": "^8.2.14",
+        "@angular/router": "^8.2.14",
+        "@ngx-translate/core": "^11.0.1",
+        "chart.js": "^2.9.3",
+        "crypto-js": "^3.1.9-1",
+        "date-fns": "^2.0.0",
+        "html-custom-element": "^0.6.3",
+        "rxjs": "^6.5.3",
+        "ts-node": "^8.4.1"
+    }
 }
