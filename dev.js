@@ -12,7 +12,7 @@ try {
     var mainProcess = new main.MainProcess();
     const pathFolderToAnalyze = '/Users/utilisateur/Documents/perso_gilles_fabre/projets/genese/genese-tests-mocks/src/app/example/gn-my.service.ts';
     const options = {
-        c: __dirname + '/genese-tests.config.js',
+        config: __dirname + '/genese-tests.config.js',
         force: true,
         spec: true
     };

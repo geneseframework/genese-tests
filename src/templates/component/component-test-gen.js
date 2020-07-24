@@ -1,9 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 
-const CommonTestGen = require('../common-test-gen.js');
+const CommonTestGen = require('../../common-test-gen.js');
 
-class PipeTestGen {
+class ComponentTestGen {
   constructor (tsPath, config) {
     if (tsPath && fs.existsSync(tsPath)) {
       this.tsPath = tsPath;
@@ -14,7 +14,7 @@ class PipeTestGen {
 
     this.tsPath = tsPath;
     this.typescript = fs.readFileSync(path.resolve(tsPath), 'utf8');
-    this.template = config.templates.pipe;
+    this.template = config.templates.component;
 
     this.klass = CommonTestGen.getKlass.bind(this)();
     this.imports = CommonTestGen.getImports.bind(this)();
@@ -46,6 +46,7 @@ class PipeTestGen {
 
     return {ejsData};
   }
+
 }
 
-module.exports = PipeTestGen;
+module.exports = ComponentTestGen;

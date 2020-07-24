@@ -14,7 +14,6 @@ export class TypescriptParser {
     constructor(code: string) {
         const sourceFile = project.createSourceFile('temp.ts', code, {overwrite: true});
         this.rootNode = this.getRecursiveFrom(sourceFile, sourceFile);
-        // console.log('ROOTNODE', this.rootNode.children)
     }
 
     getRecursiveFrom(node: Node, sourceFile: SourceFile): TsNode {
