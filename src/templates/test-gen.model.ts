@@ -121,28 +121,11 @@ export abstract class TestGen {
         }
         imports[`./${moduleName}`] = [klassName]
 
-        if (this.klass.get('Constructor').node) {
-            const parameters = this.klass.get('Constructor').node.parameters ?? [];
-            console.log('PARAMSSSS', parameters)
-            for (const param of parameters) {
-                const {name, type, decorator} = this.__get(param);
-                const exportName = decorator ? decorator.name : type;
-                const emport = this.imports.find(el => el.name === exportName); // name , alias
-
-                const importStr = emport.alias ? `${exportName} as ${emport.alias}` : exportName;
-                if (exportName === 'Inject') { // do not import Inject
-                    imports[`@angular/core`] = (imports[`@angular/core`] || []).concat(decorator.param);
-                } else {
-                    imports[emport.moduleName] = (imports[emport.moduleName] || []).concat(importStr);
-                }
-            }
-        }
-
+        // TODO: add imports from Class to test
         for (const lib in imports) {
             const fileNames = imports[lib].join(', ');
             importMocks.push(`import { ${fileNames} } from '${lib}';`)
         }
-
         return importMocks;
     }
 

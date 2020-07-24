@@ -85,7 +85,6 @@ class TestGen {
     //     }
     // import statement mocks;
     getImportMocks() {
-        var _a;
         const importMocks = [];
         const klassName = this.klass.node.getName();
         const moduleName = util_1.Util.getFilename(this.tsPath).replace(/.ts$/, '');
@@ -94,22 +93,7 @@ class TestGen {
             imports[`@angular/core`] = ['Component'];
         }
         imports[`./${moduleName}`] = [klassName];
-        if (this.klass.get('Constructor').node) {
-            const parameters = (_a = this.klass.get('Constructor').node.parameters) !== null && _a !== void 0 ? _a : [];
-            console.log('PARAMSSSS', parameters);
-            for (const param of parameters) {
-                const { name, type, decorator } = this.__get(param);
-                const exportName = decorator ? decorator.name : type;
-                const emport = this.imports.find(el => el.name === exportName); // name , alias
-                const importStr = emport.alias ? `${exportName} as ${emport.alias}` : exportName;
-                if (exportName === 'Inject') { // do not import Inject
-                    imports[`@angular/core`] = (imports[`@angular/core`] || []).concat(decorator.param);
-                }
-                else {
-                    imports[emport.moduleName] = (imports[emport.moduleName] || []).concat(importStr);
-                }
-            }
-        }
+        // TODO: add imports or not ?
         for (const lib in imports) {
             const fileNames = imports[lib].join(', ');
             importMocks.push(`import { ${fileNames} } from '${lib}';`);
