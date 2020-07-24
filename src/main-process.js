@@ -81,8 +81,8 @@ class MainProcess {
             genese_tests_config_1.config.replacements.forEach(({ from, to }) => {
                 replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
             });
-            const modjule = requireFromString(replacedOutputText);
-            const Klass = modjule[ejsData.className];
+            const module = requireFromString(replacedOutputText);
+            const Klass = module[ejsData.className];
             util_1.Util.DEBUG &&
                 console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
             const ctorMockData = this.getFuncMockData(Klass, 'constructor', 'constructor');

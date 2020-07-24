@@ -55,6 +55,7 @@ export class MainProcess {
         }
     }
 
+
     run(filePath: string, options: any): void {
         try {
             const testGenerator = this.getTestGenerator(filePath);
@@ -63,7 +64,7 @@ export class MainProcess {
             const {ejsData} = testGenerator.getData();
 
             ejsData.config = config;
-// mockData is set after each statement is being analyzed from getFuncMockData
+            // mockData is set after each statement is being analyzed from getFuncMockData
             ejsData.ctorParamJs; // declaration only, will be set from mockData
             ejsData.providerMocks; //  declaration only, will be set from mockData
             ejsData.accessorTests = {}; //  declaration only, will be set from mockData
@@ -78,7 +79,7 @@ export class MainProcess {
                 }
             });
 
-// replace invalid require statements
+            // replace invalid require statements
             let replacedOutputText = result.outputText
                 .replace(/require\("\.(.*)"\)/gm, '{}') // replace require statement to a variable, {}
                 .replace(/super\(.*\);/gm, '') // remove inheritance code
@@ -89,8 +90,8 @@ export class MainProcess {
                 replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
             })
 
-            const modjule = requireFromString(replacedOutputText);
-            const Klass = modjule[ejsData.className];
+            const module = requireFromString(replacedOutputText);
+            const Klass = module[ejsData.className];
             Util.DEBUG &&
             console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
             const ctorMockData = this.getFuncMockData(Klass, 'constructor', 'constructor');
