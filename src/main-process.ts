@@ -65,10 +65,10 @@ export class MainProcess {
             const ejsData: TemplateData = testGenerator.getData();
             // ejsData.config = config;
             // mockData is set after each statement is being analyzed from getFuncMockData
-            ejsData.ctorParamJs; // declaration only, will be set from mockData
-            ejsData.providerMocks; //  declaration only, will be set from mockData
-            ejsData.accessorTests = {}; //  declaration only, will be set from mockData
-            ejsData.functionTests = {}; //  declaration only, will be set from mockData
+            // ejsData.ctorParamJs; // declaration only, will be set from mockData
+            // ejsData.providerMocks; //  declaration only, will be set from mockData
+            // ejsData.accessorTests = {}; //  declaration only, will be set from mockData
+            // ejsData.functionTests = {}; //  declaration only, will be set from mockData
 
             const result = ts.transpileModule(typescript, {
                 compilerOptions: {
