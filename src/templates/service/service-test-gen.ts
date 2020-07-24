@@ -23,25 +23,15 @@ export class ServiceTestGen extends TestGen {
     }
 
     getData(): TemplateData {
-        const ejsData: TemplateData = {
-            className: this.klass.node?.getName() ?? 'Unknown',
-            importMocks: this.getImportMocks(),
-            inputMocks: this.getInputMocks(),
-            outputMocks: this.getOutputMocks(),
-            componentProviderMocks: this.getComponentProviderMocks(),
-            selector: this.getDirectiveSelector(),
-            // importMocks: CommonTestGen.getImportMocks.bind(this)(),
-            // inputMocks: CommonTestGen.getInputMocks.bind(this)(),
-            // outputMocks: CommonTestGen.getOutputMocks.bind(this)(),
-            // componentProviderMocks: CommonTestGen.getComponentProviderMocks.bind(this)(),
-            // selector: CommonTestGen.getDirectiveSelector.bind(this)(),
-
-            ctorParamJs: undefined, // declarition only, will be set from mockData
-            providerMocks: undefined, //  declarition only, will be set from mockData
-            accessorTests: undefined, //  declarition only, will be set from mockData
-            functionTests: undefined //  declarition only, will be set from mockData
-        }
-
+        const ejsData = new TemplateData();
+        ejsData.className = this.klass.node?.getName() ?? 'Unknown';
+        ejsData.importMocks = this.getImportMocks();
+        ejsData.inputMocks = this.getInputMocks();
+        ejsData.outputMocks = this.getOutputMocks();
+        ejsData.componentProviderMocks = this.getComponentProviderMocks();
+        ejsData.selector = this.getDirectiveSelector();
+        ejsData.ctorParamJs = undefined; // declarition only; will be set from mockData
+        ejsData.providerMocks = undefined; //  declarition only; will be set from mockData
         return ejsData;
     }
 
