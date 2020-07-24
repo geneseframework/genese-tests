@@ -43,7 +43,7 @@
         "require-from-string": "^2.0.2",
         "ts-morph": "^7.1.2",
         "typescript": "^3.9.7",
-        "yargs": "^11.0.0"
+        "yargs": "^15.4.1"
     },
     "devDependencies": {
         "@angular/animations": "^8.2.14",

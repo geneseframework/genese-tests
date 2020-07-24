@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const util_1 = require("./src/util");
 const main_process_1 = require("./src/main-process");
+const util_1 = require("./src/util");
 const fs = require('fs');
 const yargs = require('yargs');
 const argv = yargs.usage('Usage: $0 <tsFile> [options]')
@@ -25,7 +25,7 @@ const argv = yargs.usage('Usage: $0 <tsFile> [options]')
     .example('$0 my.component.ts', 'generate Angular unit test for my.component.ts')
     .help('h')
     .argv;
-util_1.Util.DEBUG = argv.verbose;
+util_1.Util.setDebug(argv.verbose);
 const tsFile = argv._[0].replace(/\.spec\.ts$/, '.ts');
 if (!(tsFile && fs.existsSync(tsFile))) {
     console.error('Error. invalid typescript file. e.g., Usage $0 <tsFile> [options]');

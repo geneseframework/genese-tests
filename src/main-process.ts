@@ -1,5 +1,5 @@
 import { FuncTestGen } from './func-test-gen';
-import { Util } from './util';
+import { DEBUG, Util } from './util';
 import { InjectableTestGen } from './injectable/injectable-test-gen';
 import { MethodDeclaration } from 'ts-morph';
 import * as chalk from 'chalk';
@@ -42,9 +42,8 @@ export class MainProcess {
         if (configFile && fs.existsSync(configFile)) {
             this.loadConfig(configFile);
         } else {
-            Util.DEBUG && console.log(`${configFile} not found. Using default config instead.`)
+            DEBUG && console.log(`${configFile} not found. Using default config instead.`)
         }
-        Util.DEBUG && console.log('  *** config ***', config);
     }
 
 
@@ -92,8 +91,7 @@ export class MainProcess {
 
             const module = requireFromString(replacedOutputText);
             const Klass = module[ejsData.className];
-            Util.DEBUG &&
-            console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
+            // DEBUG && console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
             const ctorMockData = this.getFuncMockData(Klass, 'constructor', 'constructor');
             let constructorParams = '';
             for (let i = 0; i < Object.keys(ctorMockData.params).length; i++) {
@@ -141,8 +139,7 @@ export class MainProcess {
 // console.log('..................................................................')
 // console.log(ejsData)
 // console.log('..................................................................')
-//             const generated = testGenerator.getGenerated(ejsData, config);
-//             generated && testGenerator.writeGenerated(generated, config);
+
             const generated = testGenerator.getGenerated(ejsData, options);
             generated && testGenerator.writeGenerated(generated, options);
 
@@ -164,8 +161,8 @@ export class MainProcess {
             globals: {}
         };
         funcTestGen.getExpressionStatements().forEach((expr, ndx) => {
-            const code = funcTestGen.classCode.substring(expr.start, expr.end);
-            Util.DEBUG && console.log('  *** EXPRESSION ***', ndx, code.replace(/\n+/g, '').replace(/\s+/g, ' '));
+            // const code = funcTestGen.classCode.substring(expr.start, expr.end);
+            // DEBUG && console.log('  *** EXPRESSION ***', ndx, code.replace(/\n+/g, '').replace(/\s+/g, ' '));
             funcTestGen.setMockData(expr, funcMockData);
         });
 
@@ -188,8 +185,7 @@ export class MainProcess {
     }
 
     getFuncTest(Klass, funcName, funcType, angularType) {
-        Util.DEBUG &&
-        console.log('\x1b[36m%s\x1b[0m', `\nPROCESSING #${funcName}`);
+        // DEBUG && console.log('\x1b[36m%s\x1b[0m', `\nPROCESSING #${funcName}`);
 
         const funcMockData = this.getFuncMockData(Klass, funcName, funcType);
         const [allFuncMockJS, asserts] = Util.getFuncMockJS(funcMockData, angularType);

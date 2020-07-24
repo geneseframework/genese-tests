@@ -42,9 +42,8 @@ class MainProcess {
             this.loadConfig(configFile);
         }
         else {
-            util_1.Util.DEBUG && console.log(`${configFile} not found. Using default config instead.`);
+            util_1.DEBUG && console.log(`${configFile} not found. Using default config instead.`);
         }
-        util_1.Util.DEBUG && console.log('  *** config ***', genese_tests_config_1.config);
     }
     loadConfig(configFile) {
         const userConfig = require(configFile);
@@ -83,8 +82,7 @@ class MainProcess {
             });
             const module = requireFromString(replacedOutputText);
             const Klass = module[ejsData.className];
-            util_1.Util.DEBUG &&
-                console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
+            // DEBUG && console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
             const ctorMockData = this.getFuncMockData(Klass, 'constructor', 'constructor');
             let constructorParams = '';
             for (let i = 0; i < Object.keys(ctorMockData.params).length; i++) {
@@ -130,8 +128,6 @@ class MainProcess {
             // console.log('..................................................................')
             // console.log(ejsData)
             // console.log('..................................................................')
-            //             const generated = testGenerator.getGenerated(ejsData, config);
-            //             generated && testGenerator.writeGenerated(generated, config);
             const generated = testGenerator.getGenerated(ejsData, options);
             generated && testGenerator.writeGenerated(generated, options);
             errors.forEach(e => console.error(e));
@@ -151,8 +147,8 @@ class MainProcess {
             globals: {}
         };
         funcTestGen.getExpressionStatements().forEach((expr, ndx) => {
-            const code = funcTestGen.classCode.substring(expr.start, expr.end);
-            util_1.Util.DEBUG && console.log('  *** EXPRESSION ***', ndx, code.replace(/\n+/g, '').replace(/\s+/g, ' '));
+            // const code = funcTestGen.classCode.substring(expr.start, expr.end);
+            // DEBUG && console.log('  *** EXPRESSION ***', ndx, code.replace(/\n+/g, '').replace(/\s+/g, ' '));
             funcTestGen.setMockData(expr, funcMockData);
         });
         return funcMockData;
@@ -171,8 +167,7 @@ class MainProcess {
         return new injectable_test_gen_1.InjectableTestGen(tsPath);
     }
     getFuncTest(Klass, funcName, funcType, angularType) {
-        util_1.Util.DEBUG &&
-            console.log('\x1b[36m%s\x1b[0m', `\nPROCESSING #${funcName}`);
+        // DEBUG && console.log('\x1b[36m%s\x1b[0m', `\nPROCESSING #${funcName}`);
         const funcMockData = this.getFuncMockData(Klass, funcName, funcType);
         const [allFuncMockJS, asserts] = util_1.Util.getFuncMockJS(funcMockData, angularType);
         const funcMockJS = [...new Set(allFuncMockJS)];

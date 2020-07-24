@@ -51,7 +51,7 @@ class FuncTestGen {
   setMockData (node, mockData, returnValue) { // node: ExpressionStatement
     if (!node) return;
 
-    Util.DEBUG && console.log('    *** EXPRESSION ' + node.type + ' ***', this.getCode(node));
+    // Util.DEBUG && console.log('    *** EXPRESSION ' + node.type + ' ***', this.getCode(node));
     if ([
       'BreakStatement',
       'Identifier',
@@ -149,7 +149,7 @@ class FuncTestGen {
     } else if (node.type === 'AssignmentExpression') {
       const mapped = this.setMockDataMap(node, mockData); // setting map data for this expression
       if (mapped.type !== 'param') { // do NOT remove this
-        // skip param mapping e.g. `this.param = param`, which causes a bug. 
+        // skip param mapping e.g. `this.param = param`, which causes a bug.
         // map, `map[this.param] = param` will be used later
         this.setMockData(node.right, mockData);
         this.setMockData(node.left, mockData);
@@ -159,7 +159,7 @@ class FuncTestGen {
       const funcReturn = Util.getFuncReturn(kode);
       const exprReturnValue = returnValue || funcReturn;
       this.setPropsOrParams(kode, mockData, exprReturnValue);
-      
+
       this.setMockData(node.callee, mockData);
       node.arguments.forEach(argument => this.setMockData(argument, mockData));
 
@@ -202,7 +202,7 @@ class FuncTestGen {
 
     let mapped = {};
     if ( // ignore if left-side is a ObjectExpression or Array Pattern
-      nodeLeft && nodeRight && ['Identifier', 'MemberExpression'].includes(nodeLeft.type) 
+      nodeLeft && nodeRight && ['Identifier', 'MemberExpression'].includes(nodeLeft.type)
     ) {
       const [leftCode, rightCode] = [this.getCode(nodeLeft), this.getCode(nodeRight)];
       const paramNames = Object.keys(mockData.params);
@@ -211,7 +211,7 @@ class FuncTestGen {
 
       // only if left-side is a this.llll or llll
       if (leftCode.match(/^this\.[a-zA-Z0-9_$]+$/) || leftCode.match(/^[a-zA-Z0-9_$]+$/)) {
-        const numLeftCodeRepeats = 
+        const numLeftCodeRepeats =
           (this.funcCode.match(new RegExp(`[^\\.]${leftCode}\\.`, 'g')) || []).length;
 
         const rightCodeVarName = rightCode.replace(/\s+/g,'').replace(/\(.*\)/g,'()')
@@ -220,8 +220,8 @@ class FuncTestGen {
             mockData.map[leftCode] = rightCodeVarName;
             mapped = {type: 'param', key: leftCode, value: rightCodeVarName};
           }
-        // or right-side starts with . this.xxxx 
-        } else if (!mockData.map[leftCode] && numLeftCodeRepeats > 0) { 
+        // or right-side starts with . this.xxxx
+        } else if (!mockData.map[leftCode] && numLeftCodeRepeats > 0) {
           mockData.map[leftCode] = rightCodeVarName;
           mapped = {type: 'this', key: leftCode, value: rightCodeVarName};
         }

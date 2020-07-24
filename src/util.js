@@ -1,17 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Util = void 0;
+exports.Util = exports.DEBUG = void 0;
 const jsParser = require('acorn').Parser;
-// const path = require('path');
 const indentJs = require('indent.js');
 const strFuncRE = /^(slice|trim|substr|replace|split|toLowerCase|toUpperCase|match)$/;
 const arrFuncRE = /^(forEach|map|reduce|slice|filter)$/;
 const obsFuncRE = /^(subscribe|pipe|post|put)$/;
+exports.DEBUG = false;
 class Util {
-    static get DEBUG() { return !!Util.__debug; }
-    static set DEBUG(bool) { Util.__debug = bool; }
     static getCode(node, code) {
         return code.substring(node.start, node.end);
+    }
+    static setDebug(debug) {
+        exports.DEBUG = debug;
     }
     static isFunctionExpr(node) {
         return node.arguments &&

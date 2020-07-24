@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { Util } from './src/util';
 import { MainProcess } from './src/main-process';
+import { DEBUG, Util } from './src/util';
 
 const fs = require('fs');
 const yargs = require('yargs');
@@ -27,7 +27,7 @@ const argv = yargs.usage('Usage: $0 <tsFile> [options]')
     .help('h')
     .argv;
 
-Util.DEBUG = argv.verbose;
+Util.setDebug(argv.verbose);
 const tsFile: string = argv._[0].replace(/\.spec\.ts$/, '.ts');
 if (!(tsFile && fs.existsSync(tsFile))) {
     console.error('Error. invalid typescript file. e.g., Usage $0 <tsFile> [options]');

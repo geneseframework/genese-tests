@@ -3,16 +3,21 @@
 
 exports.__esModule = true;
 var chalk = require('chalk');
-// var ansi_colors_1 = require("ansi-colors");
-var main = require("./src/typescript-parser");
+var main = require("./src/main-process");
+var Util = require('./src/util')
 
 try {
     console.log(chalk.yellowBright("WELCOME TO GENESE TESTS"));
     console.log();
-    console.log(chalk.yellowBright("PARSER"));
-    var mainProcess = new main.TypescriptParser();
-    const pathFolderToAnalyze = __dirname + '/src/complexity/core/mocks/';
-    mainProcess.start(__dirname, pathFolderToAnalyze, __dirname, 'typescript');
+    var mainProcess = new main.MainProcess();
+    const pathFolderToAnalyze = '/Users/utilisateur/Documents/perso_gilles_fabre/projets/genese/genese-tests-mocks/src/app/example/gn-my.service.ts';
+    const options = {
+        c: __dirname + '/genese-tests.config.js',
+        force: true,
+        spec: true
+    };
+    Util.DEBUG = true;
+    mainProcess.start(pathFolderToAnalyze, options);
 
 }
 catch (err) {
