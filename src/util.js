@@ -650,7 +650,7 @@ class Util {
     }
     static __toArray(el) {
         return Array.isArray(el) ? el :
-            el && el.node ? [el] :
+            (el === null || el === void 0 ? void 0 : el.node) ? [el] :
                 [];
     }
 }

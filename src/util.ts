@@ -1,3 +1,5 @@
+import { TsNode } from './models/ts-node.model';
+
 const jsParser = require('acorn').Parser;
 const indentJs = require('indent.js');
 const strFuncRE = /^(slice|trim|substr|replace|split|toLowerCase|toUpperCase|match)$/;
@@ -636,9 +638,9 @@ export class Util {
     }
 
 
-    static __toArray(el) {
+    static __toArray<T extends TsNode>(el: T | T[]): any[] {
         return Array.isArray(el) ? el :
-            el && el.node ? [el] :
+            el?.node ? [el] :
                 [];
     }
 }

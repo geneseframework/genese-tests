@@ -19,11 +19,9 @@ class TypescriptParser {
         node.forEachChild(child => {
             children.push(this.getRecursiveFrom(child, sourceFile));
         });
-        const getFunc = function () { return { get: getFunc }; };
         const get = (kind) => {
-            // console.log('NODDDDD', syntaxKind, kind)
             const all = children.filter(el => el.syntaxKind === kind);
-            return all.length === 0 ? { get: getFunc } :
+            return all.length === 0 ? new ts_node_model_1.TsNode() :
                 all.length === 1 ? all[0] :
                     all;
         };

@@ -3,7 +3,7 @@ import { Node, SyntaxKind } from 'ts-morph';
 export class TsNode {
 
     children?: TsNode[];
-    get?: (kind: string) => () => any;
+    get?: (kind: string) => () => TsNode | TsNode[];
     node?: Node;
     nodeText?: string;
     syntaxKind?: string;
