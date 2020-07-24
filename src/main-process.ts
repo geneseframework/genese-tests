@@ -62,8 +62,7 @@ export class MainProcess {
             const testGenerator = this.getTestGenerator(filePath);
             const typescript = fs.readFileSync(filePath, 'utf8');
             const angularType = Util.getAngularType(typescript).toLowerCase();
-            const {ejsData}: TemplateData = testGenerator.getData();
-
+            const ejsData: TemplateData = testGenerator.getData();
             // ejsData.config = config;
             // mockData is set after each statement is being analyzed from getFuncMockData
             ejsData.ctorParamJs; // declaration only, will be set from mockData
@@ -90,7 +89,6 @@ export class MainProcess {
             config.replacements.forEach( ({from,to}) => {
                 replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
             })
-            console.log('REPLTXTTTT', replacedOutputText)
             const module = requireFromString(replacedOutputText);
             console.log('EJSDATAAAA', ejsData)
             const Klass = module[ejsData.className];

@@ -37,7 +37,7 @@ class ServiceTestGen extends test_gen_model_1.TestGen {
             accessorTests: undefined,
             functionTests: undefined //  declarition only, will be set from mockData
         };
-        return { ejsData };
+        return ejsData;
     }
 }
 exports.ServiceTestGen = ServiceTestGen;

@@ -56,7 +56,7 @@ class MainProcess {
             const testGenerator = this.getTestGenerator(filePath);
             const typescript = fs.readFileSync(filePath, 'utf8');
             const angularType = util_1.Util.getAngularType(typescript).toLowerCase();
-            const { ejsData } = testGenerator.getData();
+            const ejsData = testGenerator.getData();
             // ejsData.config = config;
             // mockData is set after each statement is being analyzed from getFuncMockData
             ejsData.ctorParamJs; // declaration only, will be set from mockData
@@ -80,7 +80,6 @@ class MainProcess {
             genese_tests_config_1.config.replacements.forEach(({ from, to }) => {
                 replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
             });
-            console.log('REPLTXTTTT', replacedOutputText);
             const module = requireFromString(replacedOutputText);
             console.log('EJSDATAAAA', ejsData);
             const Klass = module[ejsData.className];
