@@ -54,16 +54,10 @@ class MainProcess {
     run(filePath, options) {
         try {
             const testGenerator = this.getTestGenerator(filePath);
-            const typescript = fs.readFileSync(filePath, 'utf8');
-            const angularType = util_1.Util.getAngularType(typescript).toLowerCase();
-            const ejsData = testGenerator.getData();
-            // ejsData.config = config;
-            // mockData is set after each statement is being analyzed from getFuncMockData
-            // ejsData.constructorParams; // declaration only, will be set from mockData
-            // ejsData.providerMocks; //  declaration only, will be set from mockData
-            // ejsData.accessorTests = {}; //  declaration only, will be set from mockData
-            // ejsData.functionTests = {}; //  declaration only, will be set from mockData
-            const result = ts.transpileModule(typescript, {
+            const fileContent = fs.readFileSync(filePath, 'utf8');
+            const angularType = util_1.Util.getAngularType(fileContent).toLowerCase();
+            const templateData = testGenerator.getData();
+            const result = ts.transpileModule(fileContent, {
                 compilerOptions: {
                     module: ts.ModuleKind.CommonJS,
                     experimentalDecorators: true,
@@ -81,10 +75,11 @@ class MainProcess {
                 replacedOutputText = replacedOutputText.replace(new RegExp(from, 'gm'), to);
             });
             const module = requireFromString(replacedOutputText);
-            console.log('EJSDATAAAA', ejsData);
-            const Klass = module[ejsData.className];
+            console.log('EJSDATAAAA', templateData);
+            console.log('MODULLLL', module);
+            const constructor = module[templateData.className];
             // DEBUG && console.warn('\x1b[36m%s\x1b[0m', `PROCESSING ${Klass.ctor && Klass.ctor.name} constructor`);
-            const ctorMockData = this.getFuncMockData(Klass, 'constructor', 'constructor');
+            const ctorMockData = this.getFuncMockData(constructor, 'constructor', 'constructor');
             let constructorParams = '';
             for (let i = 0; i < Object.keys(ctorMockData.params).length; i++) {
                 constructorParams = `${constructorParams} undefined,`;
@@ -92,7 +87,7 @@ class MainProcess {
             constructorParams = constructorParams.slice(1, -1);
             // const constructorParams = constructorParams;
             // const constructorParams = Util.getFuncParamJS(ctorMockData.params);
-            ejsData.constructorParams = util_1.Util.indent(constructorParams, ' '.repeat(6)).trim();
+            templateData.constructorParams = util_1.Util.indent(constructorParams, ' '.repeat(6)).trim();
             // TODO: uncomment
             // ejsData.providerMocks = testGenerator.getProviderMocks(ctorMockData.params);
             // for (var key in ejsData.providerMocks) {
@@ -101,35 +96,35 @@ class MainProcess {
             const errors = [];
             testGenerator.klassSetters.forEach(setter => {
                 const setterName = setter.node.name.escapedText;
-                ejsData.accessorTests[`${setterName} SetterDeclaration`] =
-                    util_1.Util.indent(this.getFuncTest(Klass, setterName, 'set', angularType), '  ');
+                templateData.accessorTests[`${setterName} SetterDeclaration`] =
+                    util_1.Util.indent(this.getFuncTest(constructor, setterName, 'set', angularType), '  ');
             });
             testGenerator.klassGetters.forEach(getter => {
                 const getterName = getter.node.name.escapedText;
-                ejsData.accessorTests[`${getterName} GetterDeclaration`] =
-                    util_1.Util.indent(this.getFuncTest(Klass, getterName, 'get', angularType), '  ');
+                templateData.accessorTests[`${getterName} GetterDeclaration`] =
+                    util_1.Util.indent(this.getFuncTest(constructor, getterName, 'get', angularType), '  ');
             });
             // TODO: uncomment
             testGenerator.klassMethods.forEach(method => {
                 const methodNode = method.node;
                 const methodName = methodNode.getName();
                 try {
-                    ejsData.functionTests[methodName] =
-                        util_1.Util.indent(this.getFuncTest(Klass, methodName, 'method', angularType), '  ');
+                    templateData.functionTests[methodName] =
+                        util_1.Util.indent(this.getFuncTest(constructor, methodName, 'method', angularType), '  ');
                 }
                 catch (e) {
                     const msg = '    // ' + e.stack;
                     const itBlock = `it('should run #${method.name}()', async () => {\n` +
                         `${msg.replace(/\n/g, '\n    // ')}\n` +
                         `  });\n`;
-                    ejsData.functionTests[methodName] = itBlock;
+                    templateData.functionTests[methodName] = itBlock;
                     errors.push(e);
                 }
             });
             // console.log('..................................................................')
             // console.log(ejsData)
             // console.log('..................................................................')
-            const generated = testGenerator.getGenerated(ejsData, options);
+            const generated = testGenerator.getGenerated(templateData, options);
             generated && testGenerator.writeGenerated(generated, options);
             errors.forEach(e => console.error(e));
         }
